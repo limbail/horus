@@ -41,6 +41,12 @@
 > - [ ] Hardening.
 > - [ ] I'm starting right now, let me some time...
 
+<!-- Some ideas to be included -->
+## Ideas:
+> 
+> 
+> 
+
 <!-- Contact me -->
 ## Get in touch:
 
