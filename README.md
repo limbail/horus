@@ -4,7 +4,7 @@
   
   <img src="images/horuseye.png" class="img-responsive" alt="" class="logo" width="350" height="260"/>
   
-  <h3 align="center">HORUS- Dashboard</h3>
+  <h3 align="center">HORUS</h3>
 
   <p align="center">
   
