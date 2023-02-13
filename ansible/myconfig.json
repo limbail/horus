@@ -1,0 +1,6 @@
+{
+    "influxdb_url"  :   "http://localhost:8086/",
+    "influx_org"    :   "my-org",
+    "influx_token"  :   "tJWSEQ3gphRTxma1FNCks1xwN5y6cXMJEgOqrm8L_1uD8IaqGPcOJdsfmzY-b-wdoqsbqJIr_b_4yGiaP5tJ_Q==",
+    "influx_bucket" :   "SapMonitoring"
+}

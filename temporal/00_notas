@@ -1,0 +1,62 @@
+#${__field.labels.sid}
+
+#whole:  KmoIISHxL_qRmYKhKRTZ39VpKcuX1xhwBrUuPoexDSoXRpnSe5NtmH2W7remxryhHYhy-Pq3PhMhlsqG2yHU_g==
+#pip3 install influxdb-client
+#export INFLUXDB_TOKEN=xkegb437H-yOT41vM-zTEvzdIhg2F7xbOuE-6o_gWibPpBqxZB3NG3vXLC13GltyjqkxBAqoqcn_LxCxdALVjQ==
+
+# example1:
+INFLUXDB_TOKEN="xkegb437H-yOT41vM-zTEvzdIhg2F7xbOuE-6o_gWibPpBqxZB3NG3vXLC13GltyjqkxBAqoqcn_LxCxdALVjQ==" # send to keyring
+
+import influxdb_client, os, time
+from influxdb_client import InfluxDBClient, Point, WritePrecision
+from influxdb_client.client.write_api import SYNCHRONOUS
+
+token = os.environ.get("INFLUXDB_TOKEN")
+org = "my-org"
+url = "http://localhost:8086/"
+
+client = influxdb_client.InfluxDBClient(url=url, token=token, org=org , bucket_name='SapMonitoring')
+
+# write:
+bucket="SapMonitoring"
+
+write_api = client.write_api(write_options=SYNCHRONOUS)
+   
+for value in range(5):
+  point = (
+    Point("measurement1")
+    .tag("tagname1", "tagvalue1")
+    .field("field1", value)
+  )
+  write_api.write(bucket=bucket, org="my-org", record=point)
+  time.sleep(1) # separate points by 1 second
+
+
+# query:
+query_api = client.query_api()
+
+query = """from(bucket: "SapMonitoring")
+ |> range(start: -10m)
+ |> filter(fn: (r) => r._measurement == "measurement1")"""
+tables = query_api.query(query, org="my-org")
+
+for table in tables:
+  for record in table.records:
+    print(record)
+
+# query:
+query_api = client.query_api()
+
+query = """from(bucket: "SapMonitoring")
+  |> range(start: -10m)
+  |> filter(fn: (r) => r._measurement == "measurement1")
+  |> mean()"""
+tables = query_api.query(query, org="my-org")
+
+for table in tables:
+    for record in table.records:
+        print(record)
+
+
+pm2 start "ansible-playbook -i my_inventory.ini playbook.yml" --no-autorestart --cron "*/300 * * * *" --name "Ansible playbook"
+ansible-playbook -i my_inventory.ini playbook.yml
