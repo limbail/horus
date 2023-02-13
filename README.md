@@ -17,7 +17,7 @@
     AUTOMATION:
     - Some repetitive tasks.
 
-    This project will be update in my free time, if someone want to help, write me some email or push some commit.
+    This project will be updated in my free time, if someone want to help me, write me some email or push some commit.
   </p>
 </div>
 
