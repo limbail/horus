@@ -106,7 +106,6 @@ def _check_url_expiration(url):
             check_url_expiration_logic(hostname,port).split(':')
         except:
             pass
-    
 
 for url in urls:
     _check_url_expiration(url)
