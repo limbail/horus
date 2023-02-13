@@ -53,3 +53,7 @@
 * Website: https://limbail.com
 * Email: limbail@protonmail.com
 
+
+<!-- Some screenshots -->
+## Some screenshots of actual status:
+  <img src="images/dashboard.png" class="img-responsive" alt="" class="logo"/>
