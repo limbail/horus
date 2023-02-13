@@ -78,7 +78,7 @@ def _sap_abap_jobs():
         sapdate=sapdate['K_DATE']
 
         QUERY_TABLE = 'TBTCO'
-        options = [{'TEXT': "SDLSTRTDT = '{}'".format(sapdate)} and {'TEXT': "STATUS = 'R'"} ]
+        options = [{'TEXT': "SDLSTRTDT = '{}'".format(sapdate)} and {'TEXT': "STATUS = 'R'"}]
         Fields = ['STRTDATE', 'STRTTIME']
         FIELDS = [{'FIELDNAME':x} for x in Fields]
         jobs = conn.call("RFC_READ_TABLE", DELIMITER='|', FIELDS=FIELDS, QUERY_TABLE=QUERY_TABLE, OPTIONS=options )
