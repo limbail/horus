@@ -35,3 +35,10 @@ Here's why:
 ## Pending
 
 * I'm starting right now, let me some time...
+
+<!-- Contact me -->
+## Contact me
+
+* Website: https://limbail.com
+* Email: limbail@protonmail.com
+
