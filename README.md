@@ -6,14 +6,16 @@
   <h1 align="center">HORUS</h1>
 
   <p align="center">
-  
     Dashboard for SAP servers using ansible, pyrfc, influxdb and grafana. focused in:
     
     MONITORING:
     - Dashboard overview of systems. fast, easy and productive.
     
     SECURITY:
-    - Hardening focused with SAP best practices
+    - Hardening focused with SAP best practices.
+    
+    AUTOMATION:
+    - Some repetitive tasks.
 
     This project will be update in my free time, if someone want to help, write me some email or push some commit.
   </p>
@@ -33,10 +35,10 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Pending:
-> * Dashboard   (50%)
-> * Alerts
-> * Hardening
-> * I'm starting right now, let me some time...
+> - [ ] Dashboard   (50%)
+> - [ ] Alerts
+> - [ ] Hardening
+> - [ ] I'm starting right now, let me some time...
 
 <!-- Contact me -->
 ## Get in touch:
