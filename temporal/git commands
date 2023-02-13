@@ -1,0 +1,10 @@
+git init
+git remote add origin https://github.com/limbail/horus.git
+git remote -v (for checking current repository)
+git add -A(add all files)
+git commit -m 'Added my project'
+git pull --rebase origin horus
+git push origin horus
+
+git add -A && git commit -m 'some changes'
+git push origin horus
