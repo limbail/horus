@@ -35,9 +35,10 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Pending:
-> - [ ] Dashboard   (50%)
-> - [ ] Alerts
-> - [ ] Hardening
+> - [ ] Dashboard   (50%).
+> - [ ] Cleanup scripts for upload.
+> - [ ] Alerts.
+> - [ ] Hardening.
 > - [ ] I'm starting right now, let me some time...
 
 <!-- Contact me -->
