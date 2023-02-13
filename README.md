@@ -1,10 +1,9 @@
 <!-- PROJECT INFO -->
 <br />
 <div align="center">
-  <a href="https://github.com/limbail/horus/blob/horus/images/horuseye.png">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
+  
+  <img src="images/horuseye.png" class="img-responsive" alt="" class="logo" width="350" height="260"/>
+  
   <h3 align="center">HORUS- Dashboard</h3>
 
   <p align="center">
