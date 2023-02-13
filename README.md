@@ -1,10 +1,9 @@
 <!-- PROJECT INFO -->
-<br />
 <div align="center">
   
   <img src="images/horuseye.png" class="img-responsive" alt="" class="logo" width="350" height="260"/>
   
-  <h3 align="center">HORUS</h3>
+  <h1 align="center">HORUS</h1>
 
   <p align="center">
   
@@ -20,24 +19,27 @@
   </p>
 </div>
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
-
-Here's why:
-
-"The Eye of Horus is an ancient Egyptian symbol of protection"
-
-* Your time should be focused on creating something amazing and not losing time with repetitive tasks, for that I want to save time specially SAP Consultants and Security teams
-* SAP is not easy to understand and exist a big gap between SAP and Security. This project will help to have some clearly simple task done in the fast and correct way.
-* You should implement DRY principles to the rest of your life :smile:
 
 <!-- ABOUT THE PROJECT -->
-## Pending
+## About The Project:
+> Here's why:
+> 
+> * "The Eye of Horus is an ancient Egyptian symbol of protection"
+> 
+> * Your time should be focused on creating something amazing and not losing time with repetitive tasks, for that I want to save time specially SAP Consultants and Security teams
+> * SAP is not easy to understand and exist a big gap between SAP and Security. This project will help to have some clearly simple task done in the fast and correct way.
+> * You should implement DRY principles to the rest of your life :smile:
 
-* I'm starting right now, let me some time...
+
+<!-- ABOUT THE PROJECT -->
+## Pending:
+> * Dashboard   (50%)
+> * Alerts
+> * Hardening
+> * I'm starting right now, let me some time...
 
 <!-- Contact me -->
-## Contact me
+## Get in touch:
 
 * Website: https://limbail.com
 * Email: limbail@protonmail.com
