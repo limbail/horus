@@ -1,7 +1,0 @@
-# ignores all .md files
-temporal
-.gitignore
-Pipfile
-Pipfile.lock
-# does not ignore the README.md file
-!README.md
