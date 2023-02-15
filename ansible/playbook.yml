@@ -40,15 +40,20 @@
       when: result is succeeded
     - debug: var=script_output.stdout_lines
 
+    - name: sap_security_abap_hardening
+      command: ../scripts/sap_security_abap_hardening.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+      register: script_output
+      when: result is succeeded
+    - debug: var=script_output.stdout_lines
 
-- name: java_isup
+- name: site_isup
   ignore_errors: true
   hosts: dev_java dev_abap
   connection: local
   gather_facts: false
   tasks:
-    - name: check java_isup
-      command: ../scripts/sap_java_isup.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+    - name: check_site_isup
+      command: ../scripts/sap_site_isup.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
       register: script_output
     - debug: var=script_output.stdout_lines
 
@@ -62,3 +67,5 @@
       command: ../scripts/check_url_expiration.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
       register: script_output
     - debug: var=script_output.stdout_lines
+
+    
