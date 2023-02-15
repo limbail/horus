@@ -28,7 +28,7 @@
 > 
 > * "The Eye of Horus is an ancient Egyptian symbol of protection"
 > 
-> * Your time should be focused on creating something amazing and not losing time with repetitive tasks, for that I want to save time specially SAP Consultants and Security teams
+> * Your time should be focused on creating something amazing and not losing time with repetitive tasks, That's why I want to help save time specially SAP Consultants and Security teams.
 > * SAP is not easy to understand and exist a big gap between SAP and Security. This project will help to have some clearly simple task done in the fast and correct way.
 > * You should implement DRY principles to the rest of your life :smile:
 
