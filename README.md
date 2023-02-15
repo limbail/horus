@@ -59,7 +59,11 @@
 * Dashboard:
 
 <img src="images/dashboard.png" class="img-responsive" alt="" class="logo"/>
-  
+
+* Alerts:
+
+<img src="images/alerts.png" class="img-responsive" alt="" class="logo"/>
+
 * Security:
 
 <img src="images/security.png" class="img-responsive" alt="" class="logo"/>
