@@ -57,3 +57,4 @@
 <!-- Some screenshots -->
 ## Some screenshots of actual status:
   <img src="images/dashboard.png" class="img-responsive" alt="" class="logo"/>
+  <img src="images/security.png" class="img-responsive" alt="" class="logo"/>
