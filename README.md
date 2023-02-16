@@ -35,10 +35,11 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Pending:
-> - [ ] Dashboard   (50%).
-> - [ ] Cleanup scripts for upload.
+> - [ ] Dashboard   (40%).
+> - [ ] Cleanup/rewrite scripts for upload (30%)
 > - [ ] Alerts.
 > - [ ] Hardening.
+> - [ ] In release version: create ansible and grafana official modules and dashboard.
 > - [ ] I'm starting right now, let me some time...
 
 <!-- Some ideas to be included -->
