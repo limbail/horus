@@ -46,6 +46,13 @@
       when: result is succeeded
     - debug: var=script_output.stdout_lines
 
+    - name: sap_security_abap_protocolisup
+      command: ../scripts/sap_security_abap_protocolisup.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+      register: script_output
+      when: result is succeeded
+    - debug: var=script_output.stdout_lines
+
+
 - name: site_isup
   ignore_errors: true
   hosts: dev_java dev_abap
