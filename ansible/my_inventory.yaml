@@ -1,0 +1,67 @@
+# fmt: yaml
+# Inventory created with love by Limbail (limbail.com)
+#
+# - name inside "hosts" must be unique.
+#   hosts:
+#     NPL_001:
+# - host_dict must be dictionary representation:
+#   {'name': 'limbail', 'inner': {'item1':'1', 'item2':'2'}}
+
+all:
+    children:
+# BEGIN - development
+        development:
+            children:
+                dev_abap:
+                    hosts:
+                        NPL_001:
+                            ansible_host: 192.168.50.179
+                            host_dict: {'fqdn': '192.168.50.179', 'sap_sid': 'npl', 'sap_client': '001', 'sap_sysn': '001', 'environment': 'dev', 'product_type': 'abap', 'urls': "http://localhost:8086/"}
+                dev_java:
+                    hosts:
+                        NPB_001:
+                            ansible_host: 192.168.50.179
+                            host_dict: {'fqdn': '192.168.50.179', 'sap_sid': 'npb', 'sap_client': '000', 'sap_sysn': '000', 'environment': 'dev', 'product_type': 'java', 'urls': "http://localhost:8086/signin,http://localhost:3000/login"}
+                dev_webdisp:
+                    hosts:
+                        NPC_001:
+                            ansible_host: 192.168.50.179
+                            host_dict: {'fqdn': '192.168.50.179', 'sap_sid': 'npc', 'sap_client': '000', 'sap_sysn': '000', 'environment': 'dev', 'product_type': 'webdisp', 'urls': "http://localhost:8086/"}
+# BEGIN - preproduction:
+        preproduction:
+            children:
+                pre_abap:
+                    hosts:
+                        IPL_001:
+                            ansible_host: 192.168.50.179
+                            host_dict: {'fqdn': '192.168.50.179', 'sap_sid': 'ipl', 'sap_client': '001', 'sap_sysn': '001', 'environment': 'pre', 'product_type': 'abap', 'urls': "http://localhost:8086/"}
+                pre_java:
+                    hosts:
+                        IPB_001:
+                            ansible_host: 192.168.50.179
+                            host_dict: {'fqdn': '192.168.50.179', 'sap_sid': 'ipb', 'sap_client': '000', 'sap_sysn': '000', 'environment': 'pre', 'product_type': 'java', 'urls': "http://localhost:8086/"}
+                pre_webdisp:
+                    hosts:
+                        IPC_001:
+                            ansible_host: 192.168.50.179
+                            host_dict: {'fqdn': '192.168.50.179', 'sap_sid': 'ipc', 'sap_client': '000', 'sap_sysn': '000', 'environment': 'pre', 'product_type': 'webdisp', 'urls': "http://localhost:8086/"}
+# BEGIN - production:
+        production:
+            children:
+                pro_abap:
+                    hosts:
+                        PPL_001:
+                            ansible_host: 192.168.50.179
+                            host_dict: {'fqdn': '192.168.50.179', 'sap_sid': 'ppl', 'sap_client': '001', 'sap_sysn': '001', 'environment': 'pre', 'product_type': 'abap', 'urls': "http://localhost:8086/"}
+                pro_java:
+                    hosts:
+                        PPB_001:
+                            ansible_host: 192.168.50.179
+                            host_dict: {'fqdn': '192.168.50.179', 'sap_sid': 'ppb', 'sap_client': '000', 'sap_sysn': '000', 'environment': 'pre', 'product_type': 'java', 'urls': "http://localhost:8086/"}
+                pro_webdisp:
+                    hosts:
+                        PPC_001:
+                            ansible_host: 192.168.50.179
+                            host_dict: {'fqdn': '192.168.50.179', 'sap_sid': 'ppc', 'sap_client': '000', 'sap_sysn': '000', 'environment': 'pre', 'product_type': 'webdisp', 'urls': "http://localhost:8086/"}
+    vars:
+        ansible_python_interpreter: /usr/bin/env python

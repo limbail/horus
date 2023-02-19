@@ -1,57 +1,56 @@
 ---
 - name: sap_abap_isup
   ignore_errors: true # fuckit mode :)
-  hosts: dev_abap
+  hosts: dev_abap pre_abap pro_abap
   connection: local # Depend if you want executions in ansible machine or in all SAP systems. (where you have pyrfc installed?)
   gather_facts: false
   tasks:
     - name: sap_abap_isup
-      command: ../scripts/sap_abap_isup.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+      command: ../scripts/sap_abap_isup.py """{{ host_dict }}"""
       register: result
     - debug: var=result.stdout_lines
 
     - name: sap_abap_buffers
-      command: ../scripts/sap_abap_buffers.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+      command: ../scripts/sap_abap_buffers.py """{{ host_dict }}"""
       register: script_output
       when: result is succeeded
     - debug: var=script_output.stdout_lines
 
     - name: sap_abap_memory
-      command: ../scripts/sap_abap_memory.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+      command: ../scripts/sap_abap_memory.py """{{ host_dict }}"""
       register: script_output
       when: result is succeeded
     - debug: var=script_output.stdout_lines
 
     - name: sap_abap_responsetime
-      command: ../scripts/sap_abap_responsetime.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+      command: ../scripts/sap_abap_responsetime.py """{{ host_dict }}"""
       register: script_output
       when: result is succeeded
     - debug: var=script_output.stdout_lines
 
     - name: sap_abap_wp_info
-      command: ../scripts/sap_abap_wp_info.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+      command: ../scripts/sap_abap_wp_info.py """{{ host_dict }}"""
       register: script_output
       when: result is succeeded
     - debug: var=script_output.stdout_lines
 
     - name: sap_abap_jobs
-      command: ../scripts/sap_abap_jobs.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+      command: ../scripts/sap_abap_jobs.py """{{ host_dict }}"""
       register: script_output
       when: result is succeeded
     - debug: var=script_output.stdout_lines
 
     - name: sap_security_abap_hardening
-      command: ../scripts/sap_security_abap_hardening.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+      command: ../scripts/sap_security_abap_hardening.py """{{ host_dict }}"""
       register: script_output
       when: result is succeeded
     - debug: var=script_output.stdout_lines
 
     - name: sap_security_abap_protocolisup
-      command: ../scripts/sap_security_abap_protocolisup.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+      command: ../scripts/sap_security_abap_protocolisup.py """{{ host_dict }}"""
       register: script_output
       when: result is succeeded
     - debug: var=script_output.stdout_lines
-
 
 - name: site_isup
   ignore_errors: true
@@ -60,9 +59,10 @@
   gather_facts: false
   tasks:
     - name: check_site_isup
-      command: ../scripts/sap_site_isup.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+      command: ../scripts/sap_site_isup.py """{{ host_dict }}"""
       register: script_output
     - debug: var=script_output.stdout_lines
+
 
 - name: check_url_expiration
   ignore_errors: true
@@ -71,8 +71,6 @@
   gather_facts: false
   tasks:
     - name: checking check_url_expiration
-      command: ../scripts/check_url_expiration.py {{ansible_host}} {{sap_sid}} {{sap_client}} {{sap_sysn}} {{sap_product_type}} {{sap_environment}} {{urls}}
+      command: ../scripts/check_url_expiration.py """{{ host_dict }}"""
       register: script_output
     - debug: var=script_output.stdout_lines
-
-    
