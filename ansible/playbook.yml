@@ -74,3 +74,27 @@
       command: ../scripts/check_url_expiration.py """{{ host_dict }}"""
       register: script_output
     - debug: var=script_output.stdout_lines
+
+- name: os_findcore
+  remote_user: npladm
+  ignore_errors: true
+  hosts: dev_abap
+  gather_facts: false
+  tasks:
+    - name: load venv
+      command: /usr/sap/Horus/scripts/load_venv.sh
+      args:
+        chdir: /usr/sap/Horus/ansible
+      register: script_output
+    - debug: var=script_output.stdout_lines
+
+    - name: checking os_findcore
+      script: ../scripts/os_findcore.py """{{ host_dict }}"""
+      args:
+        chdir: /usr/sap/Horus/ansible
+      register: script_output
+    - debug: var=script_output.stdout_lines
+
+  #environment:
+  #  PATH: '{{ ansible_env.HOME }}/usr/sap/Horus/.venv/bin:{{ ansible_env.PATH }}'
+    
