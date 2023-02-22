@@ -6,7 +6,7 @@
   <h1 align="center">HORUS</h1>
 
   <p align="center">
-    Dashboard for SAP servers using pyrfc, pyhdb, ansyble, influxdb and grafana. focused in:
+    Dashboard for SAP servers using pyrfc, pyhdb, ansible, influxdb and grafana. focused in:
     
     MONITORING:
     - Dashboard overview of systems. fast, easy and productive.
