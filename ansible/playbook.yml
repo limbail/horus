@@ -55,7 +55,7 @@
 
 - name: site_isup
   ignore_errors: true
-  hosts: dev_java dev_abap
+  hosts: dev_java pre_java pro_java
   connection: local
   gather_facts: false
   tasks:
@@ -67,7 +67,7 @@
 
 - name: check_url_expiration
   ignore_errors: true
-  hosts: dev_java dev_abap
+  hosts: dev_java pre_java pro_java
   connection: local
   gather_facts: false
   tasks:
