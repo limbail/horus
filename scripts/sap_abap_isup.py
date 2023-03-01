@@ -52,6 +52,7 @@ def write_result(status):
     .tag("sap_sysn", sap_sysn)
     .tag("product_type", product_type)
     .tag("environment", environment)
+    .tag("abap_isup", "abap_isup")
     .field("abap_isup", status)
     )
 
