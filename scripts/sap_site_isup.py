@@ -1,17 +1,15 @@
 #!/usr/bin/env python
 try:
-    import sys, requests, datetime, json
-    import keyring
+    import sys, requests, datetime, json, keyring
+    from libs.isbusiness_time import _isbusiness_time as isbt
 except ImportError as e:
     print('Module with problems: {0}'.format(e))
 #print(sys.argv[1:])
 
-# raw argv
+# get argv and convert to to dict
 raw_argv = sys.argv[1]
-print(raw_argv)
-# convert raw argv to dict object
 fd = eval(raw_argv)
-print(type(fd))
+
 
 # define variables
 fqdn=fd['fqdn']
@@ -20,6 +18,13 @@ sap_client=fd['sap_client']
 sap_sysn=fd['sap_sysn']
 product_type=fd['product_type']
 environment=fd['environment']
+isbt_start=fd['isbusiness_time']['start']
+isbt_end=fd['isbusiness_time']['end']
+
+
+# we check business hour of hosts to decide if continue or not.
+if isbt(isbt_start,isbt_end) != True: quit()
+
 
 try:
     urls=fd['urls']

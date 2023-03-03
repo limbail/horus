@@ -1,18 +1,16 @@
 #!/usr/bin/env python
 try:
-    import sys, random, os, time, json
-    import keyring
+    import sys, random, os, time, json, keyring
     from pyrfc import Connection, get_nwrfclib_version
+    from libs.isbusiness_time import _isbusiness_time as isbt
 except ImportError as e:
     print('Module with problems: {0}'.format(e))
-#print(sys.argv[1:])
 
-# raw argv
+
+# get argv and convert to to dict
 raw_argv = sys.argv[1]
-print(raw_argv)
-# convert raw argv to dict object
 fd = eval(raw_argv)
-print(type(fd))
+
 
 # define variables
 fqdn=fd['fqdn']
@@ -21,6 +19,13 @@ sap_client=fd['sap_client']
 sap_sysn=fd['sap_sysn']
 product_type=fd['product_type']
 environment=fd['environment']
+isbt_start=fd['isbusiness_time']['start']
+isbt_end=fd['isbusiness_time']['end']
+
+
+# we check business hour of hosts to decide if continue or not.
+if isbt(isbt_start,isbt_end) != True: quit()
+
 
 # Read config File
 with open("myconfig.json", "r") as file:
@@ -30,6 +35,7 @@ influx_token = myconfig['influx_token']
 influx_org = myconfig['influx_org']
 influxdb_url = myconfig['influxdb_url']
 influx_bucket = myconfig['influx_bucket']
+
 
 # write to influx
 def write_result(status):
@@ -52,7 +58,6 @@ def write_result(status):
     .tag("sap_sysn", sap_sysn)
     .tag("product_type", product_type)
     .tag("environment", environment)
-    .tag("abap_isup", "abap_isup")
     .field("abap_isup", status)
     )
 
@@ -83,13 +88,14 @@ def _sapabapisup():
         if conn.alive == True:
             alive=True
             conn.close()
-            print("server is up")
+            print("server is up " + str(sap_sid) +" "+  str(fqdn))
             write_result(1)
         else: 
-            print("server is down!")
+            print("server is down! " + str(sap_sid) +" "+  str(fqdn))
             write_result(0)
-    except:
-        print("server is down!")
+
+    except Exception as e:
+        print("server is down! " + str(sap_sid) +" "+  str(fqdn))
         write_result(0)
 
 _sapabapisup()

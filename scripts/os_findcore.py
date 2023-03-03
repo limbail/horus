@@ -12,7 +12,6 @@ raw_argv = sys.argv[1]
 print(raw_argv)
 # convert raw argv to dict object
 fd = eval(raw_argv)
-print(type(fd))
 
 # define variables
 fqdn=fd['fqdn']
