@@ -52,125 +52,40 @@
           "color": {
             "mode": "thresholds"
           },
-          "decimals": 0,
-          "displayName": "${__field.labels.sap_sid}",
-          "links": [],
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "red",
-                  "index": 0
-                },
-                "1": {
-                  "color": "green",
-                  "index": 1
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "max": 1,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "abap_isup"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "",
-                    "url": "/d/${__dashboard.uid}/${__dashboard}?orgId=${__org}&var-SID=${__field.labels.sap_sid}"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 12,
-        "x": 0,
-        "y": 1
-      },
-      "id": 5,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "name"
-      },
-      "pluginVersion": "9.3.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "6SGAf5AVk"
-          },
-          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"abap_isup\")\n  |> filter(fn: (r) => r[\"product_type\"] == \"abap\")\n  |> aggregateWindow(every: 5m, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
-          "refId": "A"
-        }
-      ],
-      "title": "ABAP - Status",
-      "transformations": [],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "6SGAf5AVk"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
           "custom": {
-            "fillOpacity": 70,
-            "lineWidth": 0,
-            "spanNulls": false
+            "align": "left",
+            "displayMode": "color-text",
+            "filterable": true,
+            "inspect": false
           },
-          "displayName": "${__field.labels.sap_sid}",
           "mappings": [
             {
               "options": {
                 "0": {
                   "color": "red",
-                  "index": 0
+                  "index": 0,
+                  "text": "Down"
                 },
                 "1": {
                   "color": "green",
-                  "index": 1
+                  "index": 1,
+                  "text": "OK"
                 }
               },
               "type": "value"
+            },
+            {
+              "options": {
+                "pattern": "^(?!0$).*",
+                "result": {
+                  "color": "text",
+                  "index": 2
+                }
+              },
+              "type": "regex"
             }
           ],
+          "noValue": "Everything OK",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -184,26 +99,29 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 7,
         "w": 12,
-        "x": 12,
+        "x": 0,
         "y": 1
       },
-      "id": 30,
+      "id": 71,
       "options": {
-        "alignValue": "left",
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
+        "footer": {
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
         },
-        "mergeValues": true,
-        "rowHeight": 1,
-        "showValue": "never",
-        "tooltip": {
-          "mode": "none",
-          "sort": "none"
-        }
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "environment"
+          }
+        ]
       },
       "pluginVersion": "9.3.6",
       "targets": [
@@ -212,13 +130,216 @@
             "type": "influxdb",
             "uid": "6SGAf5AVk"
           },
-          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> drop(columns: [\"column\", \"url\"])\n  |> filter(fn: (r) => r[\"_field\"] == \"site_isup\")\n  |> aggregateWindow(every: 10m, fn: mean, createEmpty: false)\n",
+          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"product_type\"] == \"abap\")\n  |> last()\n  |> filter(fn: (r) => r[\"_field\"] == \"abap_isup\" and r._value == 0)\n  |> group()\n",
+          "refId": "A"
+        }
+      ],
+      "title": "ABAP - Status",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "_field": true,
+              "_measurement": true,
+              "_start": true,
+              "_stop": true,
+              "_time": true,
+              "_value": false,
+              "product_type": true,
+              "sap_sysn": true
+            },
+            "indexByName": {
+              "_field": 9,
+              "_measurement": 10,
+              "_start": 6,
+              "_stop": 7,
+              "_time": 8,
+              "_value": 5,
+              "environment": 2,
+              "fqdn": 3,
+              "product_type": 11,
+              "project": 1,
+              "sap_client": 4,
+              "sap_sid": 0,
+              "sap_sysn": 12
+            },
+            "renameByName": {
+              "_value": "status",
+              "project": "",
+              "sap_client": "client",
+              "sap_sid": "sid"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "6SGAf5AVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "displayMode": "color-text",
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "Down"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "OK"
+                },
+                "3": {
+                  "color": "yellow",
+                  "index": 3,
+                  "text": "Slow!"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "pattern": "^(?!0$).*",
+                "result": {
+                  "color": "text",
+                  "index": 2
+                }
+              },
+              "type": "regex"
+            }
+          ],
+          "noValue": "Everything OK",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "url"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "${__value.raw}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "_value"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 103
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 1
+      },
+      "id": 72,
+      "options": {
+        "footer": {
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> last()\n  |> filter(fn: (r) => r[\"_field\"] == \"site_isup\" and r._value == 0)\n  |> group()\n",
           "refId": "A"
         }
       ],
       "title": "SITE - Status",
-      "transformations": [],
-      "type": "state-timeline"
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "_field": true,
+              "_measurement": true,
+              "_start": true,
+              "_stop": true,
+              "_time": true,
+              "_value": false,
+              "fqdn": false,
+              "product_type": true,
+              "sap_client": true,
+              "sap_sysn": true,
+              "url": false
+            },
+            "indexByName": {
+              "_field": 9,
+              "_measurement": 10,
+              "_start": 6,
+              "_stop": 7,
+              "_time": 8,
+              "_value": 5,
+              "environment": 2,
+              "fqdn": 3,
+              "product_type": 11,
+              "project": 1,
+              "sap_client": 4,
+              "sap_sid": 0,
+              "sap_sysn": 12,
+              "url": 13
+            },
+            "renameByName": {
+              "_value": "status",
+              "sap_sid": "sid"
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "collapsed": true,
@@ -226,7 +347,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 5
+        "y": 8
       },
       "id": 11,
       "panels": [
@@ -265,8 +386,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -278,7 +398,7 @@
             "h": 3,
             "w": 24,
             "x": 0,
-            "y": 6
+            "y": 9
           },
           "id": 9,
           "options": {
@@ -358,8 +478,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -414,7 +533,7 @@
             "h": 7,
             "w": 11,
             "x": 0,
-            "y": 9
+            "y": 12
           },
           "id": 36,
           "options": {
@@ -450,445 +569,6 @@
           "fieldConfig": {
             "defaults": {
               "color": {
-                "mode": "thresholds"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "max": 100,
-              "min": 0,
-              "thresholds": {
-                "mode": "percentage",
-                "steps": [
-                  {
-                    "color": "red",
-                    "value": null
-                  },
-                  {
-                    "color": "yellow",
-                    "value": 80
-                  },
-                  {
-                    "color": "green",
-                    "value": 90
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 11,
-            "x": 11,
-            "y": 9
-          },
-          "id": 32,
-          "options": {
-            "displayMode": "lcd",
-            "minVizHeight": 10,
-            "minVizWidth": 0,
-            "orientation": "vertical",
-            "reduceOptions": {
-              "calcs": [],
-              "fields": "",
-              "values": true
-            },
-            "showUnfilled": true
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "6SGAf5AVk"
-              },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_field\"] == \"buffer_hitratio\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> last()",
-              "refId": "A"
-            }
-          ],
-          "title": "SAP - Buffers Hitratio",
-          "transformations": [
-            {
-              "id": "joinByLabels",
-              "options": {
-                "join": [
-                  "sap_sid"
-                ],
-                "value": "buffer_name"
-              }
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "CALE": true,
-                  "IRBD": true,
-                  "OTR": true,
-                  "sap_sid": true
-                },
-                "indexByName": {},
-                "renameByName": {}
-              }
-            }
-          ],
-          "type": "bargauge"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "6SGAf5AVk"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "percentage",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 1
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 2,
-            "x": 22,
-            "y": 9
-          },
-          "id": 48,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "6SGAf5AVk"
-              },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"abap_stuck_jobs\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Stuck Jobs",
-          "transformations": [
-            {
-              "id": "merge",
-              "options": {}
-            }
-          ],
-          "transparent": true,
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "6SGAf5AVk"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "noValue": "0",
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 2,
-            "x": 22,
-            "y": 12
-          },
-          "id": 52,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "6SGAf5AVk"
-              },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Priv. mode",
-          "transparent": true,
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "6SGAf5AVk"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "noValue": "0",
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 2,
-            "x": 22,
-            "y": 15
-          },
-          "id": 49,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "6SGAf5AVk"
-              },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Dumps",
-          "transparent": true,
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "6SGAf5AVk"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "axisSoftMin": 0,
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "smooth",
-                "lineStyle": {
-                  "fill": "solid"
-                },
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "always",
-                "spanNulls": 3600000,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "rtime_background"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "batch"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "rtime_dialog"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "dialog"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "rtime_http"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "http"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "rtime_https"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "https"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "rtime_rfc"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "rfc"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 11,
-            "x": 0,
-            "y": 16
-          },
-          "id": 46,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "6SGAf5AVk"
-              },
-              "query": "  from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"rtime_background\" or r[\"_field\"] == \"rtime_dialog\" or r[\"_field\"] == \"rtime_http\" or r[\"_field\"] == \"rtime_https\" or r[\"_field\"] == \"rtime_rfc\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
-              "refId": "A"
-            }
-          ],
-          "title": "SAP - Response Times",
-          "transformations": [
-            {
-              "id": "merge",
-              "options": {}
-            }
-          ],
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "6SGAf5AVk"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
                 "mode": "continuous-GrYlRd"
               },
               "mappings": [],
@@ -896,8 +576,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -912,7 +591,7 @@
             "h": 2,
             "w": 11,
             "x": 11,
-            "y": 16
+            "y": 12
           },
           "id": 63,
           "options": {
@@ -986,6 +665,74 @@
           "fieldConfig": {
             "defaults": {
               "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 2,
+            "x": 22,
+            "y": 12
+          },
+          "id": 48,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.3.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"abap_stuck_jobs\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+              "refId": "A"
+            }
+          ],
+          "title": "Stuck Jobs",
+          "transformations": [
+            {
+              "id": "merge",
+              "options": {}
+            }
+          ],
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
                 "mode": "continuous-GrYlRd"
               },
               "mappings": [],
@@ -993,8 +740,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1009,7 +755,7 @@
             "h": 2,
             "w": 11,
             "x": 11,
-            "y": 18
+            "y": 14
           },
           "id": 64,
           "options": {
@@ -1093,33 +839,13 @@
               "color": {
                 "mode": "thresholds"
               },
-              "mappings": [
-                {
-                  "options": {
-                    "0": {
-                      "color": "green",
-                      "index": 1,
-                      "text": "OK"
-                    },
-                    "1": {
-                      "color": "red",
-                      "index": 0,
-                      "text": "KO"
-                    }
-                  },
-                  "type": "value"
-                }
-              ],
+              "mappings": [],
+              "noValue": "0",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 1
+                    "color": "green"
                   }
                 ]
               }
@@ -1130,9 +856,9 @@
             "h": 3,
             "w": 2,
             "x": 22,
-            "y": 18
+            "y": 15
           },
-          "id": 47,
+          "id": 52,
           "options": {
             "colorMode": "value",
             "graphMode": "none",
@@ -1158,7 +884,7 @@
               "refId": "A"
             }
           ],
-          "title": "Last Backup",
+          "title": "Priv. mode",
           "transparent": true,
           "type": "stat"
         },
@@ -1177,8 +903,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1193,7 +918,7 @@
             "h": 2,
             "w": 11,
             "x": 11,
-            "y": 20
+            "y": 16
           },
           "id": 65,
           "options": {
@@ -1282,8 +1007,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1298,7 +1022,7 @@
             "h": 2,
             "w": 11,
             "x": 11,
-            "y": 22
+            "y": 18
           },
           "id": 66,
           "options": {
@@ -1371,6 +1095,415 @@
             }
           ],
           "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 2,
+            "x": 22,
+            "y": 18
+          },
+          "id": 49,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.3.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+              "refId": "A"
+            }
+          ],
+          "title": "Dumps",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "always",
+                "spanNulls": 3600000,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "rtime_background"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "batch"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "rtime_dialog"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "dialog"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "rtime_http"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "http"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "rtime_https"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "https"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "rtime_rfc"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "rfc"
+                  }
+                ]
+              },
+              {
+                "__systemRef": "hideSeriesFrom",
+                "matcher": {
+                  "id": "byNames",
+                  "options": {
+                    "mode": "exclude",
+                    "names": [
+                      "rfc"
+                    ],
+                    "prefix": "All except:",
+                    "readOnly": true
+                  }
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 11,
+            "x": 0,
+            "y": 19
+          },
+          "id": 46,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "  from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"rtime_background\" or r[\"_field\"] == \"rtime_dialog\" or r[\"_field\"] == \"rtime_http\" or r[\"_field\"] == \"rtime_https\" or r[\"_field\"] == \"rtime_rfc\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
+              "refId": "A"
+            }
+          ],
+          "title": "SAP - Response Times",
+          "transformations": [
+            {
+              "id": "merge",
+              "options": {}
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "red"
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 80
+                  },
+                  {
+                    "color": "green",
+                    "value": 90
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 11,
+            "x": 11,
+            "y": 20
+          },
+          "id": 32,
+          "options": {
+            "displayMode": "lcd",
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "orientation": "vertical",
+            "reduceOptions": {
+              "calcs": [],
+              "fields": "",
+              "values": true
+            },
+            "showUnfilled": true
+          },
+          "pluginVersion": "9.3.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_field\"] == \"buffer_hitratio\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> last()",
+              "refId": "A"
+            }
+          ],
+          "title": "SAP - Buffers Hitratio",
+          "transformations": [
+            {
+              "id": "joinByLabels",
+              "options": {
+                "join": [
+                  "sap_sid"
+                ],
+                "value": "buffer_name"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "CALE": true,
+                  "IRBD": true,
+                  "OTR": true,
+                  "sap_sid": true
+                },
+                "indexByName": {},
+                "renameByName": {}
+              }
+            }
+          ],
+          "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "green",
+                      "index": 1,
+                      "text": "OK"
+                    },
+                    "1": {
+                      "color": "red",
+                      "index": 0,
+                      "text": "KO"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 2,
+            "x": 22,
+            "y": 21
+          },
+          "id": 47,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.3.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+              "refId": "A"
+            }
+          ],
+          "title": "Last Backup",
+          "transparent": true,
+          "type": "stat"
         }
       ],
       "title": "System Overview - ABAP",
@@ -1382,7 +1515,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 6
+        "y": 9
       },
       "id": 62,
       "panels": [
@@ -1421,8 +1554,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "blue",
-                    "value": null
+                    "color": "blue"
                   }
                 ]
               }
@@ -1446,7 +1578,7 @@
             "h": 6,
             "w": 6,
             "x": 0,
-            "y": 7
+            "y": 3
           },
           "id": 68,
           "options": {
@@ -1522,7 +1654,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 10
       },
       "id": 45,
       "panels": [
@@ -1588,7 +1720,7 @@
             "h": 8,
             "w": 6,
             "x": 0,
-            "y": 15
+            "y": 11
           },
           "id": 58,
           "options": {
@@ -1601,7 +1733,12 @@
               "show": false
             },
             "showHeader": true,
-            "sortBy": []
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "compliance"
+              }
+            ]
           },
           "pluginVersion": "9.3.6",
           "targets": [
@@ -1693,7 +1830,7 @@
             "h": 8,
             "w": 7,
             "x": 6,
-            "y": 15
+            "y": 11
           },
           "id": 59,
           "options": {
@@ -1823,7 +1960,7 @@
             "h": 8,
             "w": 11,
             "x": 13,
-            "y": 15
+            "y": 11
           },
           "id": 60,
           "options": {
@@ -1878,53 +2015,54 @@
       "type": "row"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 11
       },
       "id": 40,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "gridPos": {
+            "h": 15,
+            "w": 24,
+            "x": 0,
+            "y": 12
+          },
+          "id": 38,
+          "options": {
+            "alertInstanceLabelFilter": "",
+            "alertName": "",
+            "dashboardAlerts": false,
+            "folder": "",
+            "groupBy": [
+              "alertname"
+            ],
+            "groupMode": "custom",
+            "maxItems": 999,
+            "sortOrder": 5,
+            "stateFilter": {
+              "error": true,
+              "firing": true,
+              "noData": false,
+              "normal": false,
+              "pending": false
+            },
+            "viewMode": "list"
+          },
+          "title": "SAP - Alerts",
+          "transparent": true,
+          "type": "alertlist"
+        }
+      ],
       "title": "Alerting",
       "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "6SGAf5AVk"
-      },
-      "gridPos": {
-        "h": 15,
-        "w": 24,
-        "x": 0,
-        "y": 9
-      },
-      "id": 38,
-      "options": {
-        "alertInstanceLabelFilter": "",
-        "alertName": "",
-        "dashboardAlerts": false,
-        "folder": "",
-        "groupBy": [
-          "grafana_folder"
-        ],
-        "groupMode": "default",
-        "maxItems": 20,
-        "sortOrder": 1,
-        "stateFilter": {
-          "error": true,
-          "firing": true,
-          "noData": true,
-          "normal": true,
-          "pending": true
-        },
-        "viewMode": "list"
-      },
-      "title": "SAP - Alerts",
-      "transparent": true,
-      "type": "alertlist"
     },
     {
       "collapsed": true,
@@ -1932,7 +2070,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 12
       },
       "id": 27,
       "panels": [
@@ -1969,7 +2107,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 10
+            "y": 13
           },
           "id": 56,
           "options": {
@@ -2065,7 +2203,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 13
       },
       "id": 19,
       "panels": [
@@ -2099,7 +2237,7 @@
             "h": 4,
             "w": 11,
             "x": 0,
-            "y": 18
+            "y": 14
           },
           "id": 54,
           "options": {
@@ -2180,6 +2318,261 @@
             }
           ],
           "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "fillOpacity": 70,
+                "lineWidth": 0,
+                "spanNulls": false
+              },
+              "displayName": "${__field.labels.sap_sid}",
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "red",
+                      "index": 0
+                    },
+                    "1": {
+                      "color": "green",
+                      "index": 1
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 12,
+            "x": 11,
+            "y": 14
+          },
+          "id": 30,
+          "options": {
+            "alignValue": "left",
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "mergeValues": true,
+            "rowHeight": 1,
+            "showValue": "never",
+            "tooltip": {
+              "mode": "none",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.3.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> drop(columns: [\"column\", \"url\"])\n  |> filter(fn: (r) => r[\"_field\"] == \"site_isup\")\n  |> aggregateWindow(every: 10m, fn: mean, createEmpty: false)\n",
+              "refId": "A"
+            }
+          ],
+          "title": "SITE - Status",
+          "transformations": [],
+          "type": "state-timeline"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "displayName": "${__field.labels.sap_sid}",
+              "links": [],
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "red",
+                      "index": 0
+                    },
+                    "1": {
+                      "color": "green",
+                      "index": 1
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "max": 1,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "abap_isup"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/d/${__dashboard.uid}/${__dashboard}?orgId=${__org}&var-SID=${__field.labels.sap_sid}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 12,
+            "x": 0,
+            "y": 18
+          },
+          "id": 5,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {},
+            "textMode": "name"
+          },
+          "pluginVersion": "9.3.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"product_type\"] == \"abap\")\n  |> last()\n  |> filter(fn: (r) => r[\"_field\"] == \"abap_isup\" and r._value == 0)\n",
+              "refId": "A"
+            }
+          ],
+          "title": "ABAP - Status",
+          "transformations": [],
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "displayName": "${__field.labels.sap_sid}",
+              "links": [],
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "red",
+                      "index": 0
+                    },
+                    "1": {
+                      "color": "green",
+                      "index": 1
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "max": 1,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 12,
+            "x": 12,
+            "y": 18
+          },
+          "id": 69,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {},
+            "textMode": "name"
+          },
+          "pluginVersion": "9.3.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> drop(columns: [\"column\", \"url\"])\n  |> last()  \n  |> filter(fn: (r) => r[\"_field\"] == \"site_isup\" and r._value == 0)\n\n",
+              "refId": "A"
+            }
+          ],
+          "title": "SITE - Status",
+          "transformations": [],
+          "type": "stat"
         },
         {
           "datasource": {
@@ -2405,7 +2798,7 @@
       "type": "row"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
@@ -2417,22 +2810,22 @@
         "allValue": "",
         "current": {
           "selected": false,
-          "text": "NPL",
-          "value": "NPL"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "type": "influxdb",
           "uid": "6SGAf5AVk"
         },
-        "definition": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isup\")\n  |> filter(fn: (r) => r[\"sid\"] == \"NPL\")\n  |> aggregateWindow(every: 5m, fn: mean)\n  |> yield(name: \"mean\")",
-        "hide": 0,
-        "includeAll": false,
-        "label": "SID",
+        "definition": "import \"influxdata/influxdb/schema\"\nschema.tagValues(bucket: \"horus\", tag: \"project\")\n",
+        "hide": 2,
+        "includeAll": true,
+        "label": "PROJECT",
         "multi": false,
-        "name": "SID",
+        "name": "PROJECT",
         "options": [],
-        "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isup\")\n  |> filter(fn: (r) => r[\"sid\"] == \"NPL\")\n  |> aggregateWindow(every: 5m, fn: mean)\n  |> yield(name: \"mean\")",
-        "refresh": 1,
+        "query": "import \"influxdata/influxdb/schema\"\nschema.tagValues(bucket: \"horus\", tag: \"project\")\n",
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -2440,24 +2833,23 @@
       },
       {
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "NPL",
+          "value": "NPL"
         },
         "datasource": {
           "type": "influxdb",
           "uid": "6SGAf5AVk"
         },
-        "definition": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"hana\"] == \"hana\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ALERT_RATING\" or r[\"_field\"] == \"ALERT_NAME\")\n  |> filter(fn: (r) => r[\"hana_sid\"] == \"${SID}\")\n",
-        "hide": 2,
+        "definition": "import \"influxdata/influxdb/schema\"\nimport \"strings\"\nschema.tagValues(bucket: \"horus\", tag: \"sap_sid\")\n",
+        "hide": 0,
         "includeAll": false,
         "multi": false,
-        "name": "test",
+        "name": "SID",
         "options": [],
-        "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"hana\"] == \"hana\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ALERT_RATING\" or r[\"_field\"] == \"ALERT_NAME\")\n  |> filter(fn: (r) => r[\"hana_sid\"] == \"${SID}\")\n",
+        "query": "import \"influxdata/influxdb/schema\"\nimport \"strings\"\nschema.tagValues(bucket: \"horus\", tag: \"sap_sid\")\n",
         "refresh": 1,
-        "regex": "",
+        "regex": "[A-Z][A-Z][A-Z]",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -2465,7 +2857,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -2486,6 +2878,6 @@
   "timezone": "",
   "title": "Horus - Dashboard",
   "uid": "TPQ3B504k",
-  "version": 539,
+  "version": 629,
   "weekStart": ""
 }

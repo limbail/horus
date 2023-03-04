@@ -10,7 +10,7 @@ def _isbusiness_time(start,end):
         tz = timezone('Europe/Madrid')
         timeNow = dt.now(tz)
         if start.time() < timeNow.time() < end.time():
-            if timeNow.isoweekday() in range(1, 6):
+            if timeNow.isoweekday() in range(1,8):
                 print("business hours, continue...")
                 return True
         else:

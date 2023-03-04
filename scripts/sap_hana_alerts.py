@@ -7,22 +7,6 @@ try:
 except ImportError as e:
     print('Module with problems: {0}'.format(e))
 
-"""
-# raw argv
-raw_argv = sys.argv[1]
-print(raw_argv)
-# convert raw argv to dict object
-fd = eval(raw_argv)
-print(type(fd))
-
-# define variables
-fqdn=fd['fqdn']
-sap_sid=fd['sap_sid']
-sap_client=fd['sap_client']
-sap_sysn=fd['sap_sysn']
-product_type=fd['product_type']
-environment=fd['environment']
-"""
 sap_sid='HLP'
 product_type='hana'
 
