@@ -21,6 +21,9 @@ environment=fd['environment']
 isbt_start=fd['isbusiness_time']['start']
 isbt_end=fd['isbusiness_time']['end']
 project=fd['project']
+instance_type=fd['instance_type']
+instance_id=fd['instance_id']
+action=fd['action']
 
 
 # we check business hour of hosts to decide if continue or not.
@@ -60,6 +63,9 @@ def write_result(status,url):
     # alerts
     point = (
     Point("monitoring")
+    .tag("action", 'action')
+    .tag("instance_id", instance_id)
+    .tag("instance_type", instance_type)    
     .tag("project", project)    
     .tag("fqdn", fqdn)
     .tag("sap_sid", sap_sid)

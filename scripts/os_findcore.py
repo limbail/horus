@@ -20,6 +20,9 @@ sap_client=fd['sap_client']
 sap_sysn=fd['sap_sysn']
 product_type=fd['product_type']
 environment=fd['environment']
+instance_type=fd['instance_type']
+instance_id=fd['instance_id']
+action=fd['action']
 
 # Read config File
 with open("myconfig.json", "r") as file:
@@ -45,6 +48,9 @@ def write_result(status):
     # alerts
     point = (
     Point("monitoring")
+    .tag("action", 'action')    
+    .tag("instance_id", instance_id)
+    .tag("instance_type", instance_type)    
     .tag("fqdn", fqdn)
     .tag("sap_sid", sap_sid)
     .tag("sap_client", sap_client)

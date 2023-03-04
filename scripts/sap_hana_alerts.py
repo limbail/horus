@@ -34,6 +34,9 @@ def write_result(ALERT_RATING,ALERT_NAME):
     # alerts
     point = (
     Point("alerts")
+    .tag("action", 'action')    
+    .tag("instance_id", instance_id)
+    .tag("instance_type", instance_type)    
     .tag("fqdn", '192.168.50.175')
     .tag("sap_sid", 'demo')
     .tag("sap_client", 'demo')
