@@ -96,10 +96,99 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sid"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "project"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "client"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "instance_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "instance_type"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "fqdn"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "environment"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 12,
         "x": 0,
         "y": 1
@@ -130,7 +219,7 @@
             "type": "influxdb",
             "uid": "6SGAf5AVk"
           },
-          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"product_type\"] == \"abap\")\n  |> last()\n  |> filter(fn: (r) => r[\"_field\"] == \"abap_isup\" and r._value == 0)\n  |> group()\n",
+          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"product_type\"] == \"abap\")\n  |> filter(fn: (r) => if \"${PROJECT}\" == \"ALL\" then r[\"project\"] =~/$/ else  r[\"project\"] == \"${PROJECT}\")\n  |> last()\n  |> filter(fn: (r) => r[\"_field\"] == \"abap_isup\" and r._value == 0)\n  |> group()\n",
           "refId": "A"
         }
       ],
@@ -150,19 +239,21 @@
               "sap_sysn": true
             },
             "indexByName": {
-              "_field": 9,
-              "_measurement": 10,
-              "_start": 6,
-              "_stop": 7,
-              "_time": 8,
-              "_value": 5,
+              "_field": 11,
+              "_measurement": 12,
+              "_start": 8,
+              "_stop": 9,
+              "_time": 10,
+              "_value": 7,
               "environment": 2,
               "fqdn": 3,
-              "product_type": 11,
+              "instance_id": 5,
+              "instance_type": 6,
+              "product_type": 13,
               "project": 1,
               "sap_client": 4,
               "sap_sid": 0,
-              "sap_sysn": 12
+              "sap_sysn": 14
             },
             "renameByName": {
               "_value": "status",
@@ -250,6 +341,9 @@
                     "url": "${__value.raw}"
                   }
                 ]
+              },
+              {
+                "id": "custom.width"
               }
             ]
           },
@@ -264,11 +358,89 @@
                 "value": 103
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sid"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "project"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "environment"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 127
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "fqdn"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "action"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "instance_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 12,
         "x": 12,
         "y": 1
@@ -285,7 +457,12 @@
         },
         "frameIndex": 0,
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "action"
+          }
+        ]
       },
       "pluginVersion": "9.3.6",
       "targets": [
@@ -294,7 +471,7 @@
             "type": "influxdb",
             "uid": "6SGAf5AVk"
           },
-          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> last()\n  |> filter(fn: (r) => r[\"_field\"] == \"site_isup\" and r._value == 0)\n  |> group()\n",
+          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => if \"${PROJECT}\" == \"ALL\" then r[\"project\"] =~/$/ else  r[\"project\"] == \"${PROJECT}\")\n  |> last()\n  |> filter(fn: (r) => r[\"_field\"] == \"site_isup\" and r._value == 0)\n  |> group()\n",
           "refId": "A"
         }
       ],
@@ -347,7 +524,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 9
       },
       "id": 11,
       "panels": [
@@ -386,7 +563,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               },
@@ -398,7 +576,7 @@
             "h": 3,
             "w": 24,
             "x": 0,
-            "y": 9
+            "y": 2
           },
           "id": 9,
           "options": {
@@ -422,7 +600,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"abap_isup\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"abap_isup\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
               "refId": "A"
             }
           ],
@@ -478,7 +656,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -530,10 +709,10 @@
             ]
           },
           "gridPos": {
-            "h": 7,
-            "w": 11,
+            "h": 8,
+            "w": 12,
             "x": 0,
-            "y": 12
+            "y": 5
           },
           "id": 36,
           "options": {
@@ -554,7 +733,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"sap_memory_total\" or r[\"_field\"] == \"sap_memory_used\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"sap_memory_total\" or r[\"_field\"] == \"sap_memory_used\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
               "refId": "A"
             }
           ],
@@ -576,7 +755,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -589,9 +769,9 @@
           },
           "gridPos": {
             "h": 2,
-            "w": 11,
-            "x": 11,
-            "y": 12
+            "w": 10,
+            "x": 12,
+            "y": 5
           },
           "id": 63,
           "options": {
@@ -615,7 +795,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"sap_wp_info\"] == \"sap_wp_info\")\n  |> filter(fn: (r) => r[\"_field\"] == \"wp_dia_running\" or r[\"_field\"] == \"wp_dia_total\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> last()",
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"sap_wp_info\"] == \"sap_wp_info\")\n  |> filter(fn: (r) => r[\"_field\"] == \"wp_dia_running\" or r[\"_field\"] == \"wp_dia_total\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> last()",
               "refId": "A"
             }
           ],
@@ -672,7 +852,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -687,7 +868,7 @@
             "h": 3,
             "w": 2,
             "x": 22,
-            "y": 12
+            "y": 5
           },
           "id": 48,
           "options": {
@@ -711,7 +892,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"abap_stuck_jobs\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"abap_stuck_jobs\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
               "refId": "A"
             }
           ],
@@ -740,7 +921,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -753,9 +935,9 @@
           },
           "gridPos": {
             "h": 2,
-            "w": 11,
-            "x": 11,
-            "y": 14
+            "w": 10,
+            "x": 12,
+            "y": 7
           },
           "id": 64,
           "options": {
@@ -779,7 +961,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"sap_wp_info\"] == \"sap_wp_info\")\n  |> filter(fn: (r) => r[\"_field\"] == \"wp_bgd_running\" or r[\"_field\"] == \"wp_bgd_total\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> last()",
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"sap_wp_info\"] == \"sap_wp_info\")\n  |> filter(fn: (r) => r[\"_field\"] == \"wp_bgd_running\" or r[\"_field\"] == \"wp_bgd_total\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> last()",
               "refId": "A"
             }
           ],
@@ -845,7 +1027,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               }
@@ -856,7 +1039,7 @@
             "h": 3,
             "w": 2,
             "x": 22,
-            "y": 15
+            "y": 8
           },
           "id": 52,
           "options": {
@@ -880,7 +1063,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
               "refId": "A"
             }
           ],
@@ -903,7 +1086,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -916,9 +1100,9 @@
           },
           "gridPos": {
             "h": 2,
-            "w": 11,
-            "x": 11,
-            "y": 16
+            "w": 10,
+            "x": 12,
+            "y": 9
           },
           "id": 65,
           "options": {
@@ -942,7 +1126,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"sap_wp_info\"] == \"sap_wp_info\")\n  |> filter(fn: (r) => r[\"_field\"] == \"wp_upd_running\" or r[\"_field\"] == \"wp_upd_total\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> last()",
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"sap_wp_info\"] == \"sap_wp_info\")\n  |> filter(fn: (r) => r[\"_field\"] == \"wp_upd_running\" or r[\"_field\"] == \"wp_upd_total\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> last()",
               "refId": "A"
             }
           ],
@@ -1007,7 +1191,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1020,9 +1205,9 @@
           },
           "gridPos": {
             "h": 2,
-            "w": 11,
-            "x": 11,
-            "y": 18
+            "w": 10,
+            "x": 12,
+            "y": 11
           },
           "id": 66,
           "options": {
@@ -1046,7 +1231,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"sap_wp_info\"] == \"sap_wp_info\")\n  |> filter(fn: (r) => r[\"_field\"] == \"wp_spo_running\" or r[\"_field\"] == \"wp_spo_total\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> last()",
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"sap_wp_info\"] == \"sap_wp_info\")\n  |> filter(fn: (r) => r[\"_field\"] == \"wp_spo_running\" or r[\"_field\"] == \"wp_spo_total\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> last()",
               "refId": "A"
             }
           ],
@@ -1112,7 +1297,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               }
@@ -1123,7 +1309,7 @@
             "h": 3,
             "w": 2,
             "x": 22,
-            "y": 18
+            "y": 11
           },
           "id": 49,
           "options": {
@@ -1147,7 +1333,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
               "refId": "A"
             }
           ],
@@ -1205,7 +1391,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               },
@@ -1300,9 +1487,9 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 11,
+            "w": 12,
             "x": 0,
-            "y": 19
+            "y": 13
           },
           "id": 46,
           "options": {
@@ -1323,7 +1510,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "  from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"rtime_background\" or r[\"_field\"] == \"rtime_dialog\" or r[\"_field\"] == \"rtime_http\" or r[\"_field\"] == \"rtime_https\" or r[\"_field\"] == \"rtime_rfc\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
+              "query": "  from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"rtime_background\" or r[\"_field\"] == \"rtime_dialog\" or r[\"_field\"] == \"rtime_http\" or r[\"_field\"] == \"rtime_https\" or r[\"_field\"] == \"rtime_rfc\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
               "refId": "A"
             }
           ],
@@ -1354,7 +1541,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "red"
+                    "color": "red",
+                    "value": null
                   },
                   {
                     "color": "yellow",
@@ -1371,10 +1559,10 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 7,
-            "w": 11,
-            "x": 11,
-            "y": 20
+            "h": 8,
+            "w": 10,
+            "x": 12,
+            "y": 13
           },
           "id": 32,
           "options": {
@@ -1396,7 +1584,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_field\"] == \"buffer_hitratio\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> last()",
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_field\"] == \"buffer_hitratio\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> last()",
               "refId": "A"
             }
           ],
@@ -1458,7 +1646,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1473,7 +1662,7 @@
             "h": 3,
             "w": 2,
             "x": 22,
-            "y": 21
+            "y": 14
           },
           "id": 47,
           "options": {
@@ -1497,7 +1686,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
               "refId": "A"
             }
           ],
@@ -1510,143 +1699,143 @@
       "type": "row"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 10
       },
       "id": 62,
-      "panels": [
+      "panels": [],
+      "title": "System Overview - Database",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "6SGAf5AVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "displayMode": "color-text",
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "2": {
+                  "color": "green",
+                  "index": 1
+                },
+                "4": {
+                  "color": "red",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ALERT_RATING"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 142
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 11
+      },
+      "id": 68,
+      "options": {
+        "footer": {
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "ALERT_RATING"
+          }
+        ]
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "6SGAf5AVk"
           },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "left",
-                "displayMode": "color-text",
-                "filterable": false,
-                "inspect": false
-              },
-              "mappings": [
-                {
-                  "options": {
-                    "2": {
-                      "color": "green",
-                      "index": 1
-                    },
-                    "4": {
-                      "color": "red",
-                      "index": 0
-                    }
-                  },
-                  "type": "value"
-                }
-              ],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "blue"
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "ALERT_RATING"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 142
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 6,
-            "x": 0,
-            "y": 3
-          },
-          "id": 68,
-          "options": {
-            "footer": {
-              "enablePagination": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "frameIndex": 0,
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "ALERT_RATING"
-              }
-            ]
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "6SGAf5AVk"
-              },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"alerts\")\n  |> filter(fn: (r) => r[\"hana\"] == \"hana\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ALERT_NAME\" or r[\"_field\"] == \"ALERT_RATING\")\n",
-              "refId": "A"
-            }
-          ],
-          "title": "HANA - Alerts",
-          "transformations": [
-            {
-              "id": "labelsToFields",
-              "options": {
-                "mode": "columns"
-              }
-            },
-            {
-              "id": "merge",
-              "options": {}
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "environment": true,
-                  "fqdn": true,
-                  "hana": true,
-                  "hana_sid": true,
-                  "hana_sysn": true,
-                  "product_type": true,
-                  "sap_client": true,
-                  "sap_sid": true,
-                  "sap_sysn": true
-                },
-                "indexByName": {},
-                "renameByName": {}
-              }
-            }
-          ],
-          "type": "table"
+          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"alerts\")\n  |> filter(fn: (r) => r[\"hana\"] == \"hana\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ALERT_NAME\" or r[\"_field\"] == \"ALERT_RATING\")\n",
+          "refId": "A"
         }
       ],
-      "title": "System Overview - Database",
-      "type": "row"
+      "title": "HANA - Alerts",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "mode": "columns"
+          }
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "environment": true,
+              "fqdn": true,
+              "hana": true,
+              "hana_sid": true,
+              "hana_sysn": true,
+              "product_type": true,
+              "sap_client": true,
+              "sap_sid": true,
+              "sap_sysn": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "collapsed": true,
@@ -1654,7 +1843,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 17
       },
       "id": 45,
       "panels": [
@@ -1747,7 +1936,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "\n  from(bucket: \"horus\")\n    |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n    |> filter(fn: (r) => r._measurement == \"security\")\n    |> filter(fn: (r) => r[\"hardening\"] == \"hardening\")\n    |> filter(fn: (r) => r[\"abap_parameters\"] == \"abap_parameters\")    \n    |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n    |> last()\n    |> group(columns: [\"sap_sid\"])\n    |> keep(columns: [\"_value\", \"_field\"])\n",
+              "query": "\nfrom(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"security\")\n  |> filter(fn: (r) => r[\"hardening\"] == \"hardening\")\n  |> filter(fn: (r) => r[\"abap_parameters\"] == \"abap_parameters\")    \n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> last()\n  |> group(columns: [\"sap_sid\"])\n  |> keep(columns: [\"_value\", \"_field\"])\n",
               "refId": "A"
             }
           ],
@@ -1853,7 +2042,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "\nfrom(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"security\")\n  |> filter(fn: (r) => r[\"hardening\"] == \"hardening\")\n  |> filter(fn: (r) => r[\"icm_info\"] == \"icm_info\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"${SID}\")\n  |> toString()\n  |> group(columns: [\"_field\"])\n  |> keep(columns: [\"_value\", \"_field\"])\n",
+              "query": "\nfrom(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"security\")\n  |> filter(fn: (r) => r[\"hardening\"] == \"hardening\")\n  |> filter(fn: (r) => r[\"icm_info\"] == \"icm_info\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> toString()\n  |> group(columns: [\"_field\"])\n  |> keep(columns: [\"_value\", \"_field\"])\n",
               "refId": "A"
             }
           ],
@@ -2020,7 +2209,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 18
       },
       "id": 40,
       "panels": [
@@ -2070,7 +2259,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 19
       },
       "id": 27,
       "panels": [
@@ -2107,7 +2296,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 13
+            "y": 6
           },
           "id": 56,
           "options": {
@@ -2203,7 +2392,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 20
       },
       "id": 19,
       "panels": [
@@ -2798,7 +2987,7 @@
       "type": "row"
     }
   ],
-  "refresh": false,
+  "refresh": "10s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
@@ -2807,7 +2996,7 @@
   "templating": {
     "list": [
       {
-        "allValue": "",
+        "allValue": "ALL",
         "current": {
           "selected": false,
           "text": "All",
@@ -2818,7 +3007,7 @@
           "uid": "6SGAf5AVk"
         },
         "definition": "import \"influxdata/influxdb/schema\"\nschema.tagValues(bucket: \"horus\", tag: \"project\")\n",
-        "hide": 2,
+        "hide": 0,
         "includeAll": true,
         "label": "PROJECT",
         "multi": false,
@@ -2834,15 +3023,15 @@
       {
         "current": {
           "selected": false,
-          "text": "NPL",
-          "value": "NPL"
+          "text": "NPC",
+          "value": "NPC"
         },
         "datasource": {
           "type": "influxdb",
           "uid": "6SGAf5AVk"
         },
         "definition": "import \"influxdata/influxdb/schema\"\nimport \"strings\"\nschema.tagValues(bucket: \"horus\", tag: \"sap_sid\")\n",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "SID",
@@ -2853,11 +3042,36 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "allValue": "ALL",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "6SGAf5AVk"
+        },
+        "definition": "from(bucket: \"horus\")\n|> range(start: v.timeRangeStart)\n|> filter(fn:(r) => r._measurement == \"monitoring\" and  r[\"project\"] == \"${PROJECT}\")\n|> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n|> group()\n|> distinct(column: \"instance_id\")\n",
+        "hide": 0,
+        "includeAll": true,
+        "label": "INSTANCE_ID",
+        "multi": false,
+        "name": "INSTANCE_ID",
+        "options": [],
+        "query": "from(bucket: \"horus\")\n|> range(start: v.timeRangeStart)\n|> filter(fn:(r) => r._measurement == \"monitoring\" and  r[\"project\"] == \"${PROJECT}\")\n|> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n|> group()\n|> distinct(column: \"instance_id\")\n",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -2878,6 +3092,6 @@
   "timezone": "",
   "title": "Horus - Dashboard",
   "uid": "TPQ3B504k",
-  "version": 629,
+  "version": 666,
   "weekStart": ""
 }
