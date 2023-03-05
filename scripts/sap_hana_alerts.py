@@ -4,14 +4,17 @@ try:
     from hdbcli import dbapi
     from datetime import timedelta
     import keyring
+    from libs.horus_utils import horus_root
 except ImportError as e:
     print('Module with problems: {0}'.format(e))
+
+horus_root = horus_root()
 
 sap_sid='HLP'
 product_type='hana'
 
 # Read config File
-with open("../ansible/myconfig.json", "r") as file:
+with open(horus_root + "horus_files/myconfig.json", "r") as file:
     myconfig = json.load(file)
     
 influx_token = myconfig['influx_token']

@@ -2,9 +2,11 @@
 try:
     import sys, requests, datetime, json, keyring
     from libs.isbusiness_time import _isbusiness_time as isbt
+    from libs.horus_utils import horus_root
 except ImportError as e:
     print('Module with problems: {0}'.format(e))
-#print(sys.argv[1:])
+
+horus_root = horus_root()
 
 # get argv and convert to to dict
 raw_argv = sys.argv[1]
@@ -37,7 +39,7 @@ except:
     quit()
 
 # Read config File
-with open("myconfig.json", "r") as file:
+with open(horus_root + "horus_files/myconfig.json", "r") as file:
     myconfig = json.load(file)
     
 influx_token = myconfig['influx_token']

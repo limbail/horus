@@ -3,9 +3,12 @@ try:
     import sys, random, os, time, json, keyring
     from pyrfc import Connection, get_nwrfclib_version
     from libs.isbusiness_time import _isbusiness_time as isbt
+    from libs.horus_utils import horus_root
+    from libs.check_credentials import _check_credentials
 except ImportError as e:
     print('Module with problems: {0}'.format(e))
 
+horus_root = horus_root()
 
 # get argv and convert to to dict
 raw_argv = sys.argv[1]
@@ -27,12 +30,13 @@ instance_id=fd['instance_id']
 action=fd['action']
 
 
-# we check business hour of hosts to decide if continue or not.
+# Checks before execution
 if isbt(isbt_start,isbt_end) != True: quit()
+if _check_credentials(instance_id,'abap') != True: quit()
 
 
 # Read config File
-with open("myconfig.json", "r") as file:
+with open(horus_root + "horus_files/myconfig.json", "r") as file:
     myconfig = json.load(file)
     
 influx_token = myconfig['influx_token']
@@ -72,14 +76,6 @@ def write_result(status):
     write_api.write(bucket=influx_bucket, org=influx_org, record=point)
     quit()
 
-try:
-    if keyring.get_password(sap_sid +'_'+ product_type +'_'+ fqdn,'limbail'):
-        print("Autorization was found, continue...")   
-    else: quit()
-except: 
-    print('print("Not autorization was found")')
-    write_result(0) # write error if can't connect to SAP
-    quit()
 
 def _sapabapisup():
     # pyrfc connection params
@@ -106,4 +102,6 @@ def _sapabapisup():
         print("server is down! " + str(sap_sid) +" "+  str(fqdn))
         write_result(0)
 
-_sapabapisup()
+
+if __name__ == '__main__':
+    _sapabapisup()

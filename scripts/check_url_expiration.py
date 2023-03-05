@@ -7,6 +7,9 @@ import ssl
 import sys
 import json
 from libs.isbusiness_time import _isbusiness_time as isbt
+from libs.horus_utils import horus_root
+
+horus_root = horus_root()
 
 # get argv and convert to to dict
 raw_argv = sys.argv[1]
@@ -42,7 +45,7 @@ except:
 urls=urls.split(",")
 
 # Read config File
-with open("myconfig.json", "r") as file:
+with open(horus_root + "horus_files/myconfig.json", "r") as file:
     myconfig = json.load(file)
     
 influx_token = myconfig['influx_token']
