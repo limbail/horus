@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 try:
-    import sys, requests, datetime, json, keyring
+    import sys, requests, datetime, json
     from libs.isbusiness_time import _isbusiness_time as isbt
     from libs.horus_utils import horus_root
+    from libs.manage_credentials import _check_credentials, _get_credentials
 except ImportError as e:
     print('Module with problems: {0}'.format(e))
 
@@ -28,8 +29,9 @@ instance_id=fd['instance_id']
 action=fd['action']
 
 
-# we check business hour of hosts to decide if continue or not.
+# Checks before execution
 if isbt(isbt_start,isbt_end) != True: quit()
+if _check_credentials(instance_id,'abap') != True: quit()
 
 
 try:

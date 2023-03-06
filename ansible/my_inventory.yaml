@@ -16,27 +16,27 @@ all:
                     hosts:
                         NPL_001:
                             ansible_host: 192.168.50.179
-                            host_dict: {'action': 'action', 'instance_id': 'NPL_001', 'instance_type': 'CI', 'project': 'project_1', 'isbusiness_time': {'start': '00:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'NPL', 'sap_client': '001', 'sap_sysn': '001', 'environment': 'dev', 'product_type': 'abap', 'db_type': 'sybase', 'urls': "http://localhost:8086/"}
+                            host_dict: {'action': 'action', 'instance_id': 'NPL_001', 'instance_type': 'CI', 'project': 'project_1', 'isbusiness_time': {'start': '00:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'NPL', 'sap_client': '001', 'sap_sysn': '00', 'environment': 'dev', 'product_type': 'abap', 'db_type': 'sybase', 'urls': "http://localhost:8086/"}
                         NPL_002:
                             ansible_host: 192.168.50.179
-                            host_dict: {'action': 'action', 'instance_id': 'NPL_002', 'instance_type': 'APP', 'project': 'project_1', 'isbusiness_time': {'start': '00:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'NPL', 'sap_client': '001', 'sap_sysn': '001', 'environment': 'dev', 'product_type': 'abap', 'db_type': 'sybase', 'urls': "http://localhost:8086/"}
+                            host_dict: {'action': 'action', 'instance_id': 'NPL_002', 'instance_type': 'APP', 'project': 'project_1', 'isbusiness_time': {'start': '00:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'NPL', 'sap_client': '001', 'sap_sysn': '00', 'environment': 'dev', 'product_type': 'abap', 'db_type': 'sybase', 'urls': "http://localhost:8086/"}
                         NPL_003:
                             ansible_host: 192.168.50.179
-                            host_dict: {'action': 'action', 'instance_id': 'NPL_003', 'instance_type': 'APP', 'project': 'project_1', 'isbusiness_time': {'start': '00:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'NPL', 'sap_client': '001', 'sap_sysn': '001', 'environment': 'dev', 'product_type': 'abap', 'db_type': 'sybase', 'urls': "http://localhost:8086/"}
+                            host_dict: {'action': 'action', 'instance_id': 'NPL_003', 'instance_type': 'APP', 'project': 'project_1', 'isbusiness_time': {'start': '00:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'NPL', 'sap_client': '001', 'sap_sysn': '00', 'environment': 'dev', 'product_type': 'abap', 'db_type': 'sybase', 'urls': "http://localhost:8086/"}
 
                         HPL_001:
                             ansible_host: 192.168.50.179
-                            host_dict: {'action': 'action', 'instance_id': 'HPL_001', 'instance_type': 'CI', 'project': 'project_1', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'HPL', 'sap_client': '001', 'sap_sysn': '001', 'environment': 'dev', 'product_type': 'database', 'db_type': 'hana', 'urls': "http://localhost:8086/"}
+                            host_dict: {'action': 'action', 'instance_id': 'HPL_001', 'instance_type': 'CI', 'project': 'project_1', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'HPL', 'sap_client': '001', 'sap_sysn': '01', 'environment': 'dev', 'product_type': 'database', 'db_type': 'hana', 'urls': "http://localhost:8086/"}
                 dev_java:
                     hosts:
                         NPB_001:
                             ansible_host: 192.168.50.179
-                            host_dict: {'action': 'action', 'instance_id': 'NPB_001', 'instance_type': 'CI', 'project': 'project_1', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'NPB', 'sap_client': '000', 'sap_sysn': '000', 'environment': 'dev', 'product_type': 'java', 'db_type': 'sybase', 'urls': "http://localhost:8086/signin,http://localhost:3000/login"}
+                            host_dict: {'action': 'action', 'instance_id': 'NPB_001', 'instance_type': 'CI', 'project': 'project_1', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'NPB', 'sap_client': '000', 'sap_sysn': '01', 'environment': 'dev', 'product_type': 'java', 'db_type': 'sybase', 'urls': "http://localhost:8086/signin,http://localhost:3000/login"}
                 dev_webdisp:
                     hosts:
                         NPC_001:
                             ansible_host: 192.168.50.171
-                            host_dict: {'action': 'action', 'instance_id': 'NPC_001', 'instance_type': 'CI', 'project': 'project_1', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.171', 'sap_sid': 'NPC', 'sap_client': '000', 'sap_sysn': '000', 'environment': 'dev', 'product_type': 'webdisp', 'db_type': 'n/a', 'urls': "http://localhost:8086/"}
+                            host_dict: {'action': 'action', 'instance_id': 'NPC_001', 'instance_type': 'CI', 'project': 'project_1', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.171', 'sap_sid': 'NPC', 'sap_client': '000', 'sap_sysn': '01', 'environment': 'dev', 'product_type': 'webdisp', 'db_type': 'n/a', 'urls': "http://localhost:8086/"}
 
 # BEGIN - preproduction:
         preproduction:
@@ -45,17 +45,17 @@ all:
                     hosts:
                         IPL_001:
                             ansible_host: 192.168.50.179
-                            host_dict: {'action': 'action', 'instance_id': 'IPL_001', 'instance_type': 'CI', 'project': 'project_2', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'IPL', 'sap_client': '001', 'sap_sysn': '001', 'environment': 'pre', 'product_type': 'abap', 'db_type': 'sybase', 'urls': "https://expired.badssl.com/"}
+                            host_dict: {'action': 'action', 'instance_id': 'IPL_001', 'instance_type': 'CI', 'project': 'project_2', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'IPL', 'sap_client': '001', 'sap_sysn': '99', 'environment': 'pre', 'product_type': 'abap', 'db_type': 'sybase', 'urls': "https://expired.badssl.com/"}
                 pre_java:
                     hosts:
                         IPB_001:
                             ansible_host: 192.168.50.171
-                            host_dict: {'action': 'action', 'instance_id': 'IPB_001', 'instance_type': 'CI', 'project': 'project_2', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.171', 'sap_sid': 'IPB', 'sap_client': '000', 'sap_sysn': '000', 'environment': 'pre', 'product_type': 'java', 'db_type': 'sybase', 'urls': "http://localhost:8086/,https://expired.badssl.com/"}
+                            host_dict: {'action': 'action', 'instance_id': 'IPB_001', 'instance_type': 'CI', 'project': 'project_2', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.171', 'sap_sid': 'IPB', 'sap_client': '000', 'sap_sysn': '01', 'environment': 'pre', 'product_type': 'java', 'db_type': 'sybase', 'urls': "http://localhost:8086/,https://expired.badssl.com/"}
                 pre_webdisp:
                     hosts:
                         IPC_001:
                             ansible_host: 192.168.50.171
-                            host_dict: {'action': 'action', 'instance_id': 'IPC_001', 'instance_type': 'CI', 'project': 'project_2', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.171', 'sap_sid': 'IPC', 'sap_client': '000', 'sap_sysn': '000', 'environment': 'pre', 'product_type': 'webdisp', 'db_type': 'n/a', 'urls': "https://expired.badssl.com/"}
+                            host_dict: {'action': 'action', 'instance_id': 'IPC_001', 'instance_type': 'CI', 'project': 'project_2', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.171', 'sap_sid': 'IPC', 'sap_client': '000', 'sap_sysn': '01', 'environment': 'pre', 'product_type': 'webdisp', 'db_type': 'n/a', 'urls': "https://expired.badssl.com/"}
 # BEGIN - production:
         production:
             children:
@@ -63,17 +63,17 @@ all:
                     hosts:
                         PPL_001:
                             ansible_host: 192.168.50.179
-                            host_dict: {'action': 'action', 'instance_id': 'PPL_001', 'instance_type': 'CI', 'project': 'project_3', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'PPL', 'sap_client': '001', 'sap_sysn': '001', 'environment': 'pre', 'product_type': 'abap', 'db_type': 'sybase', 'urls': "http://localhost:8086/"}
+                            host_dict: {'action': 'action', 'instance_id': 'PPL_001', 'instance_type': 'CI', 'project': 'project_3', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'PPL', 'sap_client': '001', 'sap_sysn': '99', 'environment': 'pre', 'product_type': 'abap', 'db_type': 'sybase', 'urls': "http://localhost:8086/"}
                 pro_java:
                     hosts:
                         PPB_001:
                             ansible_host: 192.168.50.171
-                            host_dict: {'action': 'action', 'instance_id': 'PPB_001', 'instance_type': 'CI', 'project': 'project_3', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.171', 'sap_sid': 'PPB', 'sap_client': '000', 'sap_sysn': '000', 'environment': 'pre', 'product_type': 'java', 'db_type': 'sybase', 'urls': "https://asdddddddssl.com/,https://expired.badssl.com/"}
+                            host_dict: {'action': 'action', 'instance_id': 'PPB_001', 'instance_type': 'CI', 'project': 'project_3', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.171', 'sap_sid': 'PPB', 'sap_client': '000', 'sap_sysn': '01', 'environment': 'pre', 'product_type': 'java', 'db_type': 'sybase', 'urls': "https://asdddddddssl.com/,https://expired.badssl.com/"}
                 pro_webdisp:
                     hosts:
                         PPC_001:
                             ansible_host: 192.168.50.171
-                            host_dict: {'action': 'action', 'instance_id': 'PPC_001', 'instance_type': 'CI', 'project': 'project_3', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.171', 'sap_sid': 'PPC', 'sap_client': '000', 'sap_sysn': '000', 'environment': 'pre', 'product_type': 'webdisp', 'db_type': 'n/a', 'urls': "http://localhost:8086/"}
+                            host_dict: {'action': 'action', 'instance_id': 'PPC_001', 'instance_type': 'CI', 'project': 'project_3', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.171', 'sap_sid': 'PPC', 'sap_client': '000', 'sap_sysn': '01', 'environment': 'pre', 'product_type': 'webdisp', 'db_type': 'n/a', 'urls': "http://localhost:8086/"}
     vars:
         ansible_python_interpreter: /usr/bin/env python
         #ansible_python_interpreter: /usr/bin/python

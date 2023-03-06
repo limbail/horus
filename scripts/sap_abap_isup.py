@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 try:
-    import sys, random, os, time, json, keyring
+    import sys, random, os, time, json
     from pyrfc import Connection, get_nwrfclib_version
     from libs.isbusiness_time import _isbusiness_time as isbt
     from libs.horus_utils import horus_root
-    from libs.check_credentials import _check_credentials
+    from libs.manage_credentials import _check_credentials, _get_credentials
 except ImportError as e:
     print('Module with problems: {0}'.format(e))
 
@@ -28,7 +28,7 @@ project=fd['project']
 instance_type=fd['instance_type']
 instance_id=fd['instance_id']
 action=fd['action']
-
+print(sap_sysn)
 
 # Checks before execution
 if isbt(isbt_start,isbt_end) != True: quit()
@@ -38,7 +38,7 @@ if _check_credentials(instance_id,'abap') != True: quit()
 # Read config File
 with open(horus_root + "horus_files/myconfig.json", "r") as file:
     myconfig = json.load(file)
-    
+
 influx_token = myconfig['influx_token']
 influx_org = myconfig['influx_org']
 influxdb_url = myconfig['influxdb_url']
@@ -83,8 +83,8 @@ def _sapabapisup():
         'ashost' : fqdn,
         'sysnr' : sap_sysn,
         'client' : sap_client,
-        'user' : 'limbail',
-        'passwd' : keyring.get_password(sap_sid +'_'+ product_type +'_'+ fqdn, 'limbail'),
+        'user' : _get_credentials(instance_id,'ABAP')['username'],
+        'passwd' : _get_credentials(instance_id,'ABAP')['password'],
     }
 
     try:

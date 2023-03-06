@@ -3,8 +3,6 @@ import yaml
 import json
 from pykeepass import PyKeePass
 from .horus_utils import horus_root
-import getpass
-import argparse
 
 horus_root = horus_root()
 
@@ -53,4 +51,15 @@ def _check_credentials(instance_id,usage):
         print('Credentials was not found, stop here!')
         return False
 
-#print(_check_credentials('NPL_001','abap'))
+def _get_credentials(instance_id,usage):
+    try:
+        d = {}
+        entry = kp.find_entries(title="{}".format(instance_id +"_"+ usage), first=True)
+        d['username'] = entry.username
+        d['password'] = entry.password
+        return d
+    except:
+        print("Failed to return credentials...")
+        raise
+
+#print(_get_credentials('NPL_001','ABAP')['username'])
