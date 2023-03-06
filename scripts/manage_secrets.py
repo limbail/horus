@@ -58,17 +58,17 @@ if config['store secret'] == True:
         print('Error: instance_id must be exist in horus inventory before create a credential.')
         quit()
 
-    entry_usage = input('abap or bbdd: ').upper()
     accepted_usages = ['ABAP', 'BBDD']
+    entry_usage = input('{}'.format(accepted_usages) + ": ").upper()
 
     if entry_usage not in accepted_usages:
-        print('Error: entry_usage must be abap or bbdd.')
+        print('Error: entry_usage must be one of {}.'.format(accepted_usages))
         quit()
 
     username = input('username: ')
     password = getpass.getpass(prompt='Password: ', stream=None)
     password_again = getpass.getpass(prompt='Password again: ', stream=None)
-
+        
     try:
         if entry_instance_id and entry_usage and password:
             if password == password_again:
