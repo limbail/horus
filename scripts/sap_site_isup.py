@@ -31,7 +31,7 @@ action=fd['action']
 
 # Checks before execution
 if isbt(isbt_start,isbt_end) != True: quit()
-if _check_credentials(instance_id,'abap') != True: quit()
+#if _check_credentials(instance_id,'abap') != True: quit()
 
 
 try:
