@@ -29,7 +29,7 @@ isbt_end=fd['isbusiness_time']['end']
 project=fd['project']
 instance_type=fd['instance_type']
 instance_id=fd['instance_id']
-action=fd['action']
+environment_status=fd['environment_status']
 
 
 # Checks before execution
@@ -66,7 +66,7 @@ def write_result(stuckjobs):
     # alerts
     point = (
     Point("monitoring")
-    .tag("action", 'action')    
+    .tag("environment_status", environment_status)    
     .tag("instance_id", instance_id)
     .tag("instance_type", instance_type)    
     .tag("project", project)
