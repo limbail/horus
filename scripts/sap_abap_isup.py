@@ -5,6 +5,7 @@ try:
     from libs.isbusiness_time import _isbusiness_time as isbt
     from libs.horus_utils import horus_root
     from libs.manage_credentials import _check_credentials, _get_credentials
+    import multiprocessing, time
 except ImportError as e:
     print('Module with problems: {0}'.format(e))
 
@@ -54,7 +55,7 @@ def write_result(status):
     except ImportError as e:
         print('Module with problems: {0}'.format(e))
 
-    client = influxdb_client.InfluxDBClient(url=influxdb_url, token=influx_token, org=influx_org, bucket_name=influx_bucket)
+    client = influxdb_client.InfluxDBClient(url=influxdb_url, token=influx_token, org=influx_org, bucket_name=influx_bucket, timeout=5, verify_ssl=False)
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
     # alerts
@@ -87,6 +88,7 @@ def _sapabapisup():
         'passwd' : _get_credentials(instance_id,'ABAP')['password'],
     }
 
+    time.sleep(1)
     try:
         conn = Connection(**conn_params)
         if conn.alive == True:
@@ -103,5 +105,16 @@ def _sapabapisup():
         write_result(0)
 
 
-if __name__ == '__main__':
+def execution():
     _sapabapisup()
+
+if __name__ == '__main__':
+    timeout=2
+    p = multiprocessing.Process(target=execution)
+    p.start()
+    p.join(timeout)
+
+    if p.is_alive():
+        print("Timeout raise!: {}".format(timeout))
+        p.terminate()
+        p.join()

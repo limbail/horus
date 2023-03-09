@@ -7,6 +7,8 @@ try:
     from pyrfc import Connection, get_nwrfclib_version
     from libs.horus_utils import horus_root
     from libs.manage_credentials import _check_credentials, _get_credentials
+    import multiprocessing, time
+
 except ImportError as e:
     print('Module with problems: {0}'.format(e))
 
@@ -60,7 +62,7 @@ def write_result(rule,value):
     except ImportError as e:
         print('Module with problems: {0}'.format(e))
 
-    client = influxdb_client.InfluxDBClient(url=influxdb_url, token=influx_token, org=influx_org, bucket_name=influx_bucket)
+    client = influxdb_client.InfluxDBClient(url=influxdb_url, token=influx_token, org=influx_org, bucket_name=influx_bucket, timeout=5, verify_ssl=False)
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
     # alerts
@@ -418,4 +420,17 @@ def _sap_security_abap_hardening():
     except:
         print('Something was wrong...')
 
-_sap_security_abap_hardening()
+
+def execution():
+    _sap_security_abap_hardening()
+
+if __name__ == '__main__':
+    timeout=2
+    p = multiprocessing.Process(target=execution)
+    p.start()
+    p.join(timeout)
+
+    if p.is_alive():
+        print("Timeout raise!: {}".format(timeout))
+        p.terminate()
+        p.join()

@@ -6,6 +6,8 @@ try:
     from pyrfc import Connection, get_nwrfclib_version
     from libs.horus_utils import horus_root
     from libs.manage_credentials import _check_credentials, _get_credentials
+    import multiprocessing, time
+
 except ImportError as e:
     print('Module with problems: {0}'.format(e))
 
@@ -59,7 +61,7 @@ def write_result(dialog,background,rfc,http,https):
     except ImportError as e:
         print('Module with problems: {0}'.format(e))
 
-    client = influxdb_client.InfluxDBClient(url=influxdb_url, token=influx_token, org=influx_org, bucket_name=influx_bucket)
+    client = influxdb_client.InfluxDBClient(url=influxdb_url, token=influx_token, org=influx_org, bucket_name=influx_bucket, timeout=5, verify_ssl=False)
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
     # alerts
@@ -106,12 +108,13 @@ def _getsaprtimes():
         
         sd=conn.call("SAPWL_SNAPSHOT_FROM_REMOTE_SYS", SELECT_SERVER=actualserver, READ_START_DATE=startdt.date(),READ_START_TIME=startdt.time(),READ_END_DATE=enddt.date(),READ_END_TIME=enddt.time() )
         summary=sd['SUMMARY']
+
         for entry in summary:
-            print(entry['TASKTYPE'])
+
             if entry['TASKTYPE'] == 'DIALOG':
                 dialog=round(entry['RESPTI'] / entry['COUNT'])
             else: dialog=0
-            if entry['TASKTYPE'] == 'BCKGRD':
+            if entry['TASKTYPE'] == 'BACKGROUND':
                 background=round(entry['RESPTI'] / entry['COUNT'])
             else: background=0
             if entry['TASKTYPE'] == 'RFC':
@@ -130,4 +133,17 @@ def _getsaprtimes():
     except:
         print('Something was wrong...')
 
-_getsaprtimes()
+
+def execution():
+    _getsaprtimes()
+
+if __name__ == '__main__':
+    timeout=5
+    p = multiprocessing.Process(target=execution)
+    p.start()
+    p.join(timeout)
+
+    if p.is_alive():
+        print("Timeout raise!: {}".format(timeout))
+        p.terminate()
+        p.join()
