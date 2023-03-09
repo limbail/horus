@@ -235,7 +235,12 @@
               "_stop": true,
               "_time": true,
               "_value": false,
+              "action": true,
+              "environment_status": true,
+              "instance_type": true,
               "product_type": true,
+              "sap_client": true,
+              "sap_sid": true,
               "sap_sysn": true
             },
             "indexByName": {
@@ -244,19 +249,22 @@
               "_start": 8,
               "_stop": 9,
               "_time": 10,
-              "_value": 7,
+              "_value": 0,
               "environment": 2,
-              "fqdn": 3,
-              "instance_id": 5,
-              "instance_type": 6,
+              "environment_status": 15,
+              "fqdn": 4,
+              "instance_id": 1,
+              "instance_type": 7,
               "product_type": 13,
-              "project": 1,
-              "sap_client": 4,
-              "sap_sid": 0,
+              "project": 3,
+              "sap_client": 5,
+              "sap_sid": 6,
               "sap_sysn": 14
             },
             "renameByName": {
               "_value": "status",
+              "environment": "env.",
+              "environment_status": "env. status",
               "project": "",
               "sap_client": "client",
               "sap_sid": "sid"
@@ -487,30 +495,40 @@
               "_stop": true,
               "_time": true,
               "_value": false,
+              "action": true,
+              "environment_status": true,
               "fqdn": false,
-              "product_type": true,
+              "instance_id": false,
+              "instance_type": true,
+              "product_type": false,
               "sap_client": true,
+              "sap_sid": true,
               "sap_sysn": true,
               "url": false
             },
             "indexByName": {
-              "_field": 9,
-              "_measurement": 10,
-              "_start": 6,
-              "_stop": 7,
-              "_time": 8,
-              "_value": 5,
+              "_field": 13,
+              "_measurement": 14,
+              "_start": 10,
+              "_stop": 11,
+              "_time": 12,
+              "_value": 0,
               "environment": 2,
-              "fqdn": 3,
-              "product_type": 11,
-              "project": 1,
-              "sap_client": 4,
-              "sap_sid": 0,
-              "sap_sysn": 12,
-              "url": 13
+              "environment_status": 8,
+              "fqdn": 5,
+              "instance_id": 1,
+              "instance_type": 16,
+              "product_type": 3,
+              "project": 4,
+              "sap_client": 9,
+              "sap_sid": 7,
+              "sap_sysn": 15,
+              "url": 6
             },
             "renameByName": {
               "_value": "status",
+              "environment": "env.",
+              "environment_status": "env. status",
               "sap_sid": "sid"
             }
           }
@@ -563,8 +581,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -637,11 +654,11 @@
                   "fill": "solid"
                 },
                 "lineWidth": 1,
-                "pointSize": 5,
+                "pointSize": 10,
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "always",
+                "showPoints": "auto",
                 "spanNulls": 600000,
                 "stacking": {
                   "group": "A",
@@ -656,8 +673,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -755,8 +771,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -852,8 +867,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -921,8 +935,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1027,8 +1040,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               }
@@ -1086,8 +1098,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1103,111 +1114,6 @@
             "w": 10,
             "x": 12,
             "y": 9
-          },
-          "id": 65,
-          "options": {
-            "displayMode": "gradient",
-            "minVizHeight": 10,
-            "minVizWidth": 0,
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": [
-                "last"
-              ],
-              "fields": "/^wp_upd_running$/",
-              "values": false
-            },
-            "showUnfilled": true
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "6SGAf5AVk"
-              },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"sap_wp_info\"] == \"sap_wp_info\")\n  |> filter(fn: (r) => r[\"_field\"] == \"wp_upd_running\" or r[\"_field\"] == \"wp_upd_total\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> last()",
-              "refId": "A"
-            }
-          ],
-          "title": "SAP - Update",
-          "transformations": [
-            {
-              "id": "merge",
-              "options": {}
-            },
-            {
-              "id": "groupBy",
-              "options": {
-                "fields": {
-                  "Metric": {
-                    "aggregations": [],
-                    "operation": "groupby"
-                  },
-                  "Time": {
-                    "aggregations": [
-                      "diff"
-                    ],
-                    "operation": "aggregate"
-                  },
-                  "Value": {
-                    "aggregations": [],
-                    "operation": "groupby"
-                  },
-                  "wp_dia_running": {
-                    "aggregations": [],
-                    "operation": "groupby"
-                  },
-                  "wp_dia_total": {
-                    "aggregations": [],
-                    "operation": "groupby"
-                  },
-                  "wp_upd_running": {
-                    "aggregations": [],
-                    "operation": "groupby"
-                  },
-                  "wp_upd_total": {
-                    "aggregations": [],
-                    "operation": "groupby"
-                  }
-                }
-              }
-            }
-          ],
-          "type": "bargauge"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "6SGAf5AVk"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-GrYlRd"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "percentage",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 10,
-            "x": 12,
-            "y": 11
           },
           "id": 66,
           "options": {
@@ -1289,6 +1195,110 @@
           "fieldConfig": {
             "defaults": {
               "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 10,
+            "x": 12,
+            "y": 11
+          },
+          "id": 65,
+          "options": {
+            "displayMode": "gradient",
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "last"
+              ],
+              "fields": "/^wp_upd_running$/",
+              "values": false
+            },
+            "showUnfilled": true
+          },
+          "pluginVersion": "9.3.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"sap_wp_info\"] == \"sap_wp_info\")\n  |> filter(fn: (r) => r[\"_field\"] == \"wp_upd_running\" or r[\"_field\"] == \"wp_upd_total\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> last()",
+              "refId": "A"
+            }
+          ],
+          "title": "SAP - Update",
+          "transformations": [
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "Metric": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "Time": {
+                    "aggregations": [
+                      "diff"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Value": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "wp_dia_running": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "wp_dia_total": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "wp_upd_running": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "wp_upd_total": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  }
+                }
+              }
+            }
+          ],
+          "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
                 "mode": "thresholds"
               },
               "mappings": [],
@@ -1297,8 +1307,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               }
@@ -1385,14 +1394,24 @@
                   "mode": "off"
                 }
               },
-              "mappings": [],
+              "mappings": [
+                {
+                  "options": {
+                    "from": 0,
+                    "result": {
+                      "index": 0
+                    },
+                    "to": 0
+                  },
+                  "type": "range"
+                }
+              ],
               "min": 0,
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -1466,7 +1485,7 @@
                   "options": {
                     "mode": "exclude",
                     "names": [
-                      "rfc"
+                      "dialog"
                     ],
                     "prefix": "All except:",
                     "readOnly": true
@@ -1510,7 +1529,7 @@
                 "type": "influxdb",
                 "uid": "6SGAf5AVk"
               },
-              "query": "  from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"rtime_background\" or r[\"_field\"] == \"rtime_dialog\" or r[\"_field\"] == \"rtime_http\" or r[\"_field\"] == \"rtime_https\" or r[\"_field\"] == \"rtime_rfc\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
+              "query": "  from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"rtime_background\" or r[\"_field\"]  == \"rtime_dialog\" or r[\"_field\"] == \"rtime_http\" or r[\"_field\"] == \"rtime_https\" or r[\"_field\"] == \"rtime_rfc\")\n  |> filter(fn: (r) => r[\"_value\"] > 0)\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
               "refId": "A"
             }
           ],
@@ -1541,8 +1560,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "red",
-                    "value": null
+                    "color": "red"
                   },
                   {
                     "color": "yellow",
@@ -1646,8 +1664,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1699,7 +1716,7 @@
       "type": "row"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1707,135 +1724,135 @@
         "y": 10
       },
       "id": 62,
-      "panels": [],
-      "title": "System Overview - Database",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "6SGAf5AVk"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "left",
-            "displayMode": "color-text",
-            "filterable": false,
-            "inspect": false
-          },
-          "mappings": [
-            {
-              "options": {
-                "2": {
-                  "color": "green",
-                  "index": 1
-                },
-                "4": {
-                  "color": "red",
-                  "index": 0
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "ALERT_RATING"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 142
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 0,
-        "y": 11
-      },
-      "id": 68,
-      "options": {
-        "footer": {
-          "enablePagination": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "frameIndex": 0,
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "ALERT_RATING"
-          }
-        ]
-      },
-      "pluginVersion": "9.3.6",
-      "targets": [
+      "panels": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "6SGAf5AVk"
           },
-          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"alerts\")\n  |> filter(fn: (r) => r[\"hana\"] == \"hana\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ALERT_NAME\" or r[\"_field\"] == \"ALERT_RATING\")\n",
-          "refId": "A"
-        }
-      ],
-      "title": "HANA - Alerts",
-      "transformations": [
-        {
-          "id": "labelsToFields",
-          "options": {
-            "mode": "columns"
-          }
-        },
-        {
-          "id": "merge",
-          "options": {}
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "environment": true,
-              "fqdn": true,
-              "hana": true,
-              "hana_sid": true,
-              "hana_sysn": true,
-              "product_type": true,
-              "sap_client": true,
-              "sap_sid": true,
-              "sap_sysn": true
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "left",
+                "displayMode": "color-text",
+                "filterable": false,
+                "inspect": false
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "2": {
+                      "color": "green",
+                      "index": 1
+                    },
+                    "4": {
+                      "color": "red",
+                      "index": 0
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue"
+                  }
+                ]
+              }
             },
-            "indexByName": {},
-            "renameByName": {}
-          }
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "ALERT_RATING"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 142
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 0,
+            "y": 3
+          },
+          "id": 68,
+          "options": {
+            "footer": {
+              "enablePagination": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "frameIndex": 0,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "ALERT_RATING"
+              }
+            ]
+          },
+          "pluginVersion": "9.3.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"alerts\")\n  |> filter(fn: (r) => r[\"hana\"] == \"hana\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ALERT_NAME\" or r[\"_field\"] == \"ALERT_RATING\")\n",
+              "refId": "A"
+            }
+          ],
+          "title": "HANA - Alerts",
+          "transformations": [
+            {
+              "id": "labelsToFields",
+              "options": {
+                "mode": "columns"
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "environment": true,
+                  "fqdn": true,
+                  "hana": true,
+                  "hana_sid": true,
+                  "hana_sysn": true,
+                  "product_type": true,
+                  "sap_client": true,
+                  "sap_sid": true,
+                  "sap_sysn": true
+                },
+                "indexByName": {},
+                "renameByName": {}
+              }
+            }
+          ],
+          "type": "table"
         }
       ],
-      "type": "table"
+      "title": "System Overview - Database",
+      "type": "row"
     },
     {
       "collapsed": true,
@@ -1843,7 +1860,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 11
       },
       "id": 45,
       "panels": [
@@ -1885,7 +1902,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               }
@@ -1909,7 +1927,7 @@
             "h": 8,
             "w": 6,
             "x": 0,
-            "y": 11
+            "y": 12
           },
           "id": 58,
           "options": {
@@ -2008,7 +2026,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "transparent"
+                    "color": "transparent",
+                    "value": null
                   }
                 ]
               }
@@ -2019,7 +2038,7 @@
             "h": 8,
             "w": 7,
             "x": 6,
-            "y": 11
+            "y": 12
           },
           "id": 59,
           "options": {
@@ -2138,7 +2157,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "transparent"
+                    "color": "transparent",
+                    "value": null
                   }
                 ]
               }
@@ -2149,7 +2169,7 @@
             "h": 8,
             "w": 11,
             "x": 13,
-            "y": 11
+            "y": 12
           },
           "id": 60,
           "options": {
@@ -2209,7 +2229,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 12
       },
       "id": 40,
       "panels": [
@@ -2222,7 +2242,7 @@
             "h": 15,
             "w": 24,
             "x": 0,
-            "y": 12
+            "y": 13
           },
           "id": 38,
           "options": {
@@ -2259,7 +2279,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 13
       },
       "id": 27,
       "panels": [
@@ -2281,7 +2301,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -2296,7 +2317,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 6
+            "y": 14
           },
           "id": 56,
           "options": {
@@ -2392,7 +2413,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 14
       },
       "id": 19,
       "panels": [
@@ -2426,7 +2447,7 @@
             "h": 4,
             "w": 11,
             "x": 0,
-            "y": 14
+            "y": 34
           },
           "id": 54,
           "options": {
@@ -2554,7 +2575,7 @@
             "h": 4,
             "w": 12,
             "x": 11,
-            "y": 14
+            "y": 34
           },
           "id": 30,
           "options": {
@@ -2651,7 +2672,7 @@
             "h": 4,
             "w": 12,
             "x": 0,
-            "y": 18
+            "y": 38
           },
           "id": 5,
           "options": {
@@ -2730,7 +2751,7 @@
             "h": 4,
             "w": 12,
             "x": 12,
-            "y": 18
+            "y": 38
           },
           "id": 69,
           "options": {
@@ -2791,7 +2812,7 @@
             "h": 5,
             "w": 3,
             "x": 0,
-            "y": 22
+            "y": 42
           },
           "id": 34,
           "options": {
@@ -2854,7 +2875,7 @@
             "h": 6,
             "w": 3,
             "x": 3,
-            "y": 22
+            "y": 42
           },
           "id": 14,
           "options": {
@@ -2951,7 +2972,7 @@
             "h": 7,
             "w": 11,
             "x": 0,
-            "y": 28
+            "y": 48
           },
           "id": 41,
           "options": {
@@ -3092,6 +3113,6 @@
   "timezone": "",
   "title": "Horus - Dashboard",
   "uid": "TPQ3B504k",
-  "version": 666,
+  "version": 682,
   "weekStart": ""
 }
