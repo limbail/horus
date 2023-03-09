@@ -103,11 +103,12 @@ def _getsaprtimes():
         sapdate=conn.call("GET_SYSTEM_TIME_REMOTE")
 
         # dont get more than 5 min in the past!, we want fast requests :)
-        startdt = datetime.datetime.strptime(str(sapdate['K_DATE']) +' '+ str(sapdate['K_TIME']), '%Y%m%d %H%M%S') - timedelta(hours=0, minutes=10) # start date is system datetime sub 5 min.
+        startdt = datetime.datetime.strptime(str(sapdate['K_DATE']) +' '+ str(sapdate['K_TIME']), '%Y%m%d %H%M%S') - timedelta(hours=0, minutes=5) # start date is system datetime sub 5 min.
         enddt = datetime.datetime.strptime(str(sapdate['K_DATE']) +' '+ str(sapdate['K_TIME']), '%Y%m%d %H%M%S')# - timedelta(hours=0, minutes=10) # end date is system actual datetime.
         
         sd=conn.call("SAPWL_SNAPSHOT_FROM_REMOTE_SYS", SELECT_SERVER=actualserver, READ_START_DATE=startdt.date(),READ_START_TIME=startdt.time(),READ_END_DATE=enddt.date(),READ_END_TIME=enddt.time() )
         summary=sd['SUMMARY']
+
 
         for entry in summary:
             if entry['TASKTYPE'] == 'DIALOG':
@@ -130,12 +131,11 @@ def _getsaprtimes():
                 https=round(entry['RESPTI'] / entry['COUNT'])
             else: https=0
 
-            print(dialog,background,rfc,http,https)
             write_result(dialog,background,rfc,http,https)
 
         conn.close()
     except:
-        raise
+        #raise
         print('Something was wrong...')
 
 
