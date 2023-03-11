@@ -110,8 +110,7 @@ def _sapabapbuffer():
             buffer_hitratio = data["HITRATIO"]
             write_result(buffer_name,buffer_avail_size,buffer_used_space,buffer_swap,buffer_hitratio)
     except:
-        print("Connection to SAP fail.")
-
+        raise
 
 def execution():
     _sapabapbuffer()

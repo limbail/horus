@@ -112,7 +112,7 @@ def _sap_abap_memory():
         write_result(sap_memory_total,sap_memory_used)
 
     except:
-        print('Something was wrong...')
+        raise
 
 
 def execution():

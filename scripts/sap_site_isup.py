@@ -92,24 +92,23 @@ def _sapsiteisup(url):
         
         if elapsed > datetime.timedelta(seconds=2):
             print("server is slow!")
-            write_result(3,url) # slow response
+            write_result(3,url)
         elif r.status_code == 200:
             print("server is ok")
-            write_result(1,url) # normal
+            write_result(1,url)
         else:
             print("server response is different than RC=200")
-            write_result(0,url) # all others errors are bad
-    except:
-        print('Something was wrong...')
+            write_result(0,url)
+    except Exception:
         write_result(0,url)
-
+        pass
 
 def execution():
     for url in urls:
         _sapsiteisup(url)
 
 if __name__ == '__main__':
-    timeout=2
+    timeout=10
     p = multiprocessing.Process(target=execution)
     p.start()
     p.join(timeout)

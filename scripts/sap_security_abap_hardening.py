@@ -418,7 +418,7 @@ def _sap_security_abap_hardening():
         conn.close()
 
     except:
-        print('Something was wrong...')
+        raise
 
 
 def execution():

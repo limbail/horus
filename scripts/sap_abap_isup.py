@@ -30,7 +30,6 @@ instance_type=fd['instance_type']
 instance_id=fd['instance_id']
 environment_status=fd['environment_status']
 
-
 # Checks before execution
 if isbt(isbt_start,isbt_end) != True: quit()
 if _check_credentials(instance_id,'abap') != True: quit()
@@ -77,18 +76,17 @@ def write_result(status):
     write_api.write(bucket=influx_bucket, org=influx_org, record=point)
     quit()
 
+# pyrfc connection params
+conn_params = {
+    'ashost' : fqdn,
+    'sysnr' : sap_sysn,
+    'client' : sap_client,
+    'user' : _get_credentials(instance_id,'ABAP')['username'],
+    'passwd' : _get_credentials(instance_id,'ABAP')['password'],
+}
 
 def _sapabapisup():
-    # pyrfc connection params
-    conn_params = {
-        'ashost' : fqdn,
-        'sysnr' : sap_sysn,
-        'client' : sap_client,
-        'user' : _get_credentials(instance_id,'ABAP')['username'],
-        'passwd' : _get_credentials(instance_id,'ABAP')['password'],
-    }
 
-    time.sleep(1)
     try:
         conn = Connection(**conn_params)
         if conn.alive == True:
@@ -99,11 +97,10 @@ def _sapabapisup():
         else: 
             print("server is down! " + str(sap_sid) +" "+  str(fqdn))
             write_result(0)
-
-    except Exception as e:
-        print("server is down! " + str(sap_sid) +" "+  str(fqdn))
+    except Exception:
         write_result(0)
-
+        pass
+        
 
 def execution():
     _sapabapisup()

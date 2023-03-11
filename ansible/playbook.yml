@@ -55,7 +55,7 @@
 
 - name: site_isup
   ignore_errors: true
-  hosts: dev_java pre_java pro_java
+  hosts: development preproduction production
   connection: local
   gather_facts: false
   tasks:
@@ -73,5 +73,16 @@
   tasks:
     - name: checking check_url_expiration
       command: ../scripts/check_url_expiration.py """{{ host_dict }}"""
+      register: script_output
+    - debug: var=script_output.stdout_lines
+
+- name: Z_WIP
+  ignore_errors: true
+  hosts: dev_abap
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: checking Z_WIP
+      command: ../scripts/Z_WIP.py """{{ host_dict }}"""
       register: script_output
     - debug: var=script_output.stdout_lines

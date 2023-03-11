@@ -128,14 +128,14 @@ def _sap_abap_jobs():
 
             #print(item)
             if min_diff > 1440:
-                stuckjobs += 1 # remove negative datetime object and compare diff to now, more than...
+                stuckjobs += 1
                 write_result(stuckjobs)
             else:
                 write_result(0)
 
         write_result(0)
     except:
-        print('Something was wrong...')
+        raise
 
 
 def execution():

@@ -110,7 +110,7 @@ def _sap_security_abap_protocolisup():
         conn.close()
 
     except:
-        print('Something was wrong...')
+        raise
 
 
 def execution():

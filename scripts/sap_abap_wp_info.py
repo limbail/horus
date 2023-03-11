@@ -139,7 +139,8 @@ def _getwpinfo():
         
         conn.close()
     except:
-        print('Something was wrong...')
+        raise
+
 
 
 def execution():

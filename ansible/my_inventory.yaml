@@ -25,8 +25,8 @@ all:
                             host_dict: {'environment_status': 'active', 'instance_id': 'NPL_003', 'instance_type': 'APP', 'project': 'project_1', 'isbusiness_time': {'start': '00:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'NPL', 'sap_client': '001', 'sap_sysn': '00', 'environment': 'dev', 'product_type': 'abap', 'db_type': 'sybase', 'urls': "http://localhost:8086/"}
 
                         HPL_001:
-                            ansible_host: 192.168.50.179
-                            host_dict: {'environment_status': 'active', 'instance_id': 'HPL_001', 'instance_type': 'CI', 'project': 'project_1', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.179', 'sap_sid': 'HPL', 'sap_client': '001', 'sap_sysn': '01', 'environment': 'dev', 'product_type': 'database', 'db_type': 'hana', 'urls': "http://localhost:8086/"}
+                            ansible_host: 192.168.50.175
+                            host_dict: {'environment_status': 'active', 'instance_id': 'HPL_001', 'instance_type': 'CI', 'project': 'project_1', 'isbusiness_time': {'start': '08:00:00', 'end': '23:59:59'}, 'fqdn': '192.168.50.175', 'sap_sid': 'HPL', 'sap_client': '001', 'sap_sysn': '01', 'environment': 'dev', 'product_type': 'database', 'db_type': 'hana', 'urls': "http://localhost:8086/"}
                 dev_java:
                     hosts:
                         NPB_001:

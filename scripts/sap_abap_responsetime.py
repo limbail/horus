@@ -106,6 +106,7 @@ def _getsaprtimes():
         startdt = datetime.datetime.strptime(str(sapdate['K_DATE']) +' '+ str(sapdate['K_TIME']), '%Y%m%d %H%M%S') - timedelta(hours=0, minutes=5) # start date is system datetime sub 5 min.
         enddt = datetime.datetime.strptime(str(sapdate['K_DATE']) +' '+ str(sapdate['K_TIME']), '%Y%m%d %H%M%S')# - timedelta(hours=0, minutes=10) # end date is system actual datetime.
         
+        # maybe SWNC_GET_STATRECS_FRAME
         sd=conn.call("SAPWL_SNAPSHOT_FROM_REMOTE_SYS", SELECT_SERVER=actualserver, READ_START_DATE=startdt.date(),READ_START_TIME=startdt.time(),READ_END_DATE=enddt.date(),READ_END_TIME=enddt.time() )
         summary=sd['SUMMARY']
 
@@ -135,8 +136,7 @@ def _getsaprtimes():
 
         conn.close()
     except:
-        #raise
-        print('Something was wrong...')
+        raise
 
 
 def execution():
