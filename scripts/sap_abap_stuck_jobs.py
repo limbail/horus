@@ -121,7 +121,6 @@ def _sap_abap_jobs():
             min_diff = sec_diff / 60
 
             if min_diff > 1440:
-                print(item)
                 stuckjobs += 1
 
         write_result(stuckjobs)
