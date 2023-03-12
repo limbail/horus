@@ -479,7 +479,7 @@
             "type": "influxdb",
             "uid": "6SGAf5AVk"
           },
-          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => if \"${PROJECT}\" == \"ALL\" then r[\"project\"] =~/$/ else  r[\"project\"] == \"${PROJECT}\")\n  |> last()\n  |> filter(fn: (r) => r[\"_field\"] == \"site_isup\" and r._value == 0)\n  |> group()\n",
+          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\" and r[\"_field\"] == \"site_isup\")\n  |> filter(fn: (r) => if \"${PROJECT}\" == \"ALL\" then r[\"project\"] =~/$/ else  r[\"project\"] == \"${PROJECT}\")\n  |> last()\n  |> filter(fn: (r) => r[\"_field\"] == \"site_isup\" and r._value == 0)\n  |> group()\n",
           "refId": "A"
         }
       ],
@@ -537,12 +537,149 @@
       "type": "table"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "6SGAf5AVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "left",
+            "displayMode": "color-text",
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "successful": {
+                  "color": "green",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "backup_date"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsIso"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 74,
+      "options": {
+        "footer": {
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"backup\"] == \"backup\")\n  |> filter(fn: (r) => r[\"sap_sid\"] == \"HPL\")\n  |> filter(fn: (r) => r[\"_field\"] == \"backup_status\")\n  |> last()\n  |> group()\n\n",
+          "refId": "A"
+        }
+      ],
+      "title": "BACKUP - status",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "_field": true,
+              "_measurement": true,
+              "_start": true,
+              "_stop": true,
+              "_time": true,
+              "backup": true,
+              "environment": true,
+              "environment_status": true,
+              "fqdn": true,
+              "instance_id": false,
+              "instance_type": true,
+              "product_type": true,
+              "project": true,
+              "sap_client": true,
+              "sap_sid": true,
+              "sap_sysn": true
+            },
+            "indexByName": {
+              "_field": 7,
+              "_measurement": 8,
+              "_start": 4,
+              "_stop": 5,
+              "_time": 6,
+              "_value": 0,
+              "backup": 9,
+              "backup_date": 3,
+              "backup_id": 2,
+              "environment": 10,
+              "environment_status": 11,
+              "fqdn": 12,
+              "instance_id": 1,
+              "instance_type": 13,
+              "product_type": 14,
+              "project": 15,
+              "sap_client": 16,
+              "sap_sid": 17,
+              "sap_sysn": 18
+            },
+            "renameByName": {
+              "_value": "status"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
       "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 17
       },
       "id": 11,
       "panels": [
@@ -581,7 +718,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               },
@@ -673,7 +811,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -771,7 +910,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -862,12 +1002,24 @@
               "color": {
                 "mode": "thresholds"
               },
-              "mappings": [],
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "green",
+                      "index": 0,
+                      "text": "OK"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
               "thresholds": {
-                "mode": "percentage",
+                "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -935,7 +1087,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1032,65 +1185,6 @@
           "fieldConfig": {
             "defaults": {
               "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "noValue": "0",
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 2,
-            "x": 22,
-            "y": 8
-          },
-          "id": 52,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "6SGAf5AVk"
-              },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Priv. mode",
-          "transparent": true,
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "6SGAf5AVk"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
                 "mode": "continuous-GrYlRd"
               },
               "mappings": [],
@@ -1098,7 +1192,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1202,7 +1297,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1299,65 +1395,6 @@
           "fieldConfig": {
             "defaults": {
               "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "noValue": "0",
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 2,
-            "x": 22,
-            "y": 11
-          },
-          "id": 49,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "6SGAf5AVk"
-              },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Dumps",
-          "transparent": true,
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "6SGAf5AVk"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
                 "mode": "palette-classic"
               },
               "custom": {
@@ -1384,7 +1421,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "always",
+                "showPoints": "auto",
                 "spanNulls": 3600000,
                 "stacking": {
                   "group": "A",
@@ -1411,7 +1448,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               },
@@ -1477,30 +1515,6 @@
                     "value": "rfc"
                   }
                 ]
-              },
-              {
-                "__systemRef": "hideSeriesFrom",
-                "matcher": {
-                  "id": "byNames",
-                  "options": {
-                    "mode": "exclude",
-                    "names": [
-                      "dialog"
-                    ],
-                    "prefix": "All except:",
-                    "readOnly": true
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": true
-                    }
-                  }
-                ]
               }
             ]
           },
@@ -1560,7 +1574,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "red"
+                    "color": "red",
+                    "value": null
                   },
                   {
                     "color": "yellow",
@@ -1632,84 +1647,6 @@
             }
           ],
           "type": "bargauge"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "6SGAf5AVk"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [
-                {
-                  "options": {
-                    "0": {
-                      "color": "green",
-                      "index": 1,
-                      "text": "OK"
-                    },
-                    "1": {
-                      "color": "red",
-                      "index": 0,
-                      "text": "KO"
-                    }
-                  },
-                  "type": "value"
-                }
-              ],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 1
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 2,
-            "x": 22,
-            "y": 14
-          },
-          "id": 47,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "9.3.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "6SGAf5AVk"
-              },
-              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Last Backup",
-          "transparent": true,
-          "type": "stat"
         }
       ],
       "title": "System Overview - ABAP",
@@ -1721,10 +1658,89 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 18
       },
       "id": 62,
       "panels": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 3
+          },
+          "id": 76,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "title": "Hana - Memory",
+          "type": "timeseries"
+        },
         {
           "datasource": {
             "type": "influxdb",
@@ -1760,7 +1776,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "blue"
+                    "color": "blue",
+                    "value": null
                   }
                 ]
               }
@@ -1781,9 +1798,9 @@
             ]
           },
           "gridPos": {
-            "h": 6,
-            "w": 6,
-            "x": 0,
+            "h": 8,
+            "w": 10,
+            "x": 12,
             "y": 3
           },
           "id": 68,
@@ -1849,6 +1866,85 @@
             }
           ],
           "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "green",
+                      "index": 1,
+                      "text": "OK"
+                    },
+                    "1": {
+                      "color": "red",
+                      "index": 0,
+                      "text": "KO"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 2,
+            "x": 22,
+            "y": 3
+          },
+          "id": 47,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.3.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+              "refId": "A"
+            }
+          ],
+          "title": "Last Backup",
+          "transparent": true,
+          "type": "stat"
         }
       ],
       "title": "System Overview - Database",
@@ -1860,7 +1956,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 19
       },
       "id": 45,
       "panels": [
@@ -1927,7 +2023,7 @@
             "h": 8,
             "w": 6,
             "x": 0,
-            "y": 12
+            "y": 20
           },
           "id": 58,
           "options": {
@@ -2038,7 +2134,7 @@
             "h": 8,
             "w": 7,
             "x": 6,
-            "y": 12
+            "y": 20
           },
           "id": 59,
           "options": {
@@ -2169,7 +2265,7 @@
             "h": 8,
             "w": 11,
             "x": 13,
-            "y": 12
+            "y": 20
           },
           "id": 60,
           "options": {
@@ -2229,7 +2325,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 20
       },
       "id": 40,
       "panels": [
@@ -2242,7 +2338,7 @@
             "h": 15,
             "w": 24,
             "x": 0,
-            "y": 13
+            "y": 21
           },
           "id": 38,
           "options": {
@@ -2279,7 +2375,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 21
       },
       "id": 27,
       "panels": [
@@ -2317,7 +2413,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 14
+            "y": 22
           },
           "id": 56,
           "options": {
@@ -2413,7 +2509,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 22
       },
       "id": 19,
       "panels": [
@@ -2432,7 +2528,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -2447,7 +2544,7 @@
             "h": 4,
             "w": 11,
             "x": 0,
-            "y": 34
+            "y": 23
           },
           "id": 54,
           "options": {
@@ -2537,6 +2634,126 @@
           "fieldConfig": {
             "defaults": {
               "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 2,
+            "x": 18,
+            "y": 23
+          },
+          "id": 49,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.3.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+              "refId": "A"
+            }
+          ],
+          "title": "Dumps",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 2,
+            "x": 22,
+            "y": 23
+          },
+          "id": 52,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.3.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "6SGAf5AVk"
+              },
+              "query": "from(bucket: \"horus\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"monitoring\")\n  |> filter(fn: (r) => r[\"instance_id\"] == \"${INSTANCE_ID}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"isupdate\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+              "refId": "A"
+            }
+          ],
+          "title": "Priv. mode",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "6SGAf5AVk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
                 "mode": "continuous-GrYlRd"
               },
               "custom": {
@@ -2564,7 +2781,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               }
@@ -2574,8 +2792,8 @@
           "gridPos": {
             "h": 4,
             "w": 12,
-            "x": 11,
-            "y": 34
+            "x": 12,
+            "y": 26
           },
           "id": 30,
           "options": {
@@ -2642,7 +2860,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               },
@@ -2672,7 +2891,7 @@
             "h": 4,
             "w": 12,
             "x": 0,
-            "y": 38
+            "y": 27
           },
           "id": 5,
           "options": {
@@ -2739,7 +2958,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               },
@@ -2751,7 +2971,7 @@
             "h": 4,
             "w": 12,
             "x": 12,
-            "y": 38
+            "y": 30
           },
           "id": 69,
           "options": {
@@ -2800,7 +3020,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               },
@@ -2812,7 +3033,7 @@
             "h": 5,
             "w": 3,
             "x": 0,
-            "y": 42
+            "y": 31
           },
           "id": 34,
           "options": {
@@ -2860,7 +3081,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -2875,7 +3097,7 @@
             "h": 6,
             "w": 3,
             "x": 3,
-            "y": 42
+            "y": 31
           },
           "id": 14,
           "options": {
@@ -2956,7 +3178,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "red"
+                    "color": "red",
+                    "value": null
                   },
                   {
                     "color": "green",
@@ -2972,7 +3195,7 @@
             "h": 7,
             "w": 11,
             "x": 0,
-            "y": 48
+            "y": 37
           },
           "id": 41,
           "options": {
@@ -3113,6 +3336,6 @@
   "timezone": "",
   "title": "Horus - Dashboard",
   "uid": "TPQ3B504k",
-  "version": 682,
+  "version": 706,
   "weekStart": ""
 }
