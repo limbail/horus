@@ -39,11 +39,6 @@ if isbt(isbt_start,isbt_end) != True: quit()
 if _check_credentials(instance_id,'abap') != True: quit()
 
 
-try:
-    urls=fd['urls']
-except:
-    print('Not urls to check, continue...')
-
 # Read config File
 with open(horus_root + "horus_files/myconfig.json", "r") as file:
     myconfig = json.load(file)
@@ -100,16 +95,19 @@ def _sap_abap_jobs():
         conn = Connection(**conn_params)
 
         sapdate=conn.call("GET_SYSTEM_TIME_REMOTE")
-        sapdate=sapdate['K_DATE']
-
+        startdt = dt.datetime.strptime(str(sapdate['K_DATE']), '%Y%m%d') - timedelta(days=30)
+        startdt = startdt.strftime('%Y%m%d')
+        
         QUERY_TABLE = 'TBTCO'
-        options = [{'TEXT': "SDLSTRTDT = '{}'".format(sapdate)} and {'TEXT': "STATUS = 'R'"}]
+        options = [
+        {'TEXT': "SDLSTRTDT >= '{}'".format(startdt)},
+        {'TEXT': "AND STATUS = 'R'"}]
+        
         Fields = ['STRTDATE', 'STRTTIME']
         FIELDS = [{'FIELDNAME':x} for x in Fields]
-        jobs = conn.call("RFC_READ_TABLE", DELIMITER='|', FIELDS=FIELDS, QUERY_TABLE=QUERY_TABLE, OPTIONS=options )
-        
-        now = dt.datetime.now()    
-
+        jobs = conn.call("RFC_READ_TABLE", DELIMITER='|', FIELDS=FIELDS, QUERY_TABLE=QUERY_TABLE, OPTIONS=options)
+              
+        now = dt.datetime.now()
         stuckjobs=0
         for item in jobs['DATA']:
             d=item['WA'].split('|')[0]
@@ -118,23 +116,15 @@ def _sap_abap_jobs():
             mytime = dt.datetime.strptime(t,'%H%M%S').time()
             jobdt = dt.datetime.combine(d1, mytime)
 
-            # get difference
             delta = now - jobdt
-
-            #print (delta)
             sec_diff = delta.total_seconds()
-            #print('difference in seconds:', sec_diff)
             min_diff = sec_diff / 60
-            #print('difference in minutes:', min_diff)
 
-            #print(item)
             if min_diff > 1440:
+                print(item)
                 stuckjobs += 1
-                write_result(stuckjobs)
-            else:
-                write_result(0)
 
-        write_result(0)
+        write_result(stuckjobs)
         conn.close()            
         
     except:
@@ -143,7 +133,7 @@ def _sap_abap_jobs():
 
 def execution():
     _sap_abap_jobs()
-
+    
 if __name__ == '__main__':
     timeout=10
     p = multiprocessing.Process(target=execution)
@@ -154,4 +144,3 @@ if __name__ == '__main__':
         print("Timeout raise!: {}".format(timeout))
         p.terminate()
         p.join()
-    

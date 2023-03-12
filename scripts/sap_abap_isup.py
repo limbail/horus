@@ -98,7 +98,7 @@ def _sapabapisup():
             print("server is down! " + str(sap_sid) +" "+  str(fqdn))
             write_result(0)
         conn.close()            
-            
+
     except Exception:
         write_result(0)
 

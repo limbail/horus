@@ -34,8 +34,8 @@
       when: result is succeeded
     - debug: var=script_output.stdout_lines
 
-    - name: sap_abap_jobs
-      command: ../scripts/sap_abap_jobs.py """{{ host_dict }}"""
+    - name: sap_abap_stuck_jobs
+      command: ../scripts/sap_abap_stuck_jobs.py """{{ host_dict }}"""
       register: script_output
       when: result is succeeded
     - debug: var=script_output.stdout_lines
