@@ -107,7 +107,7 @@ def execution():
     _sapabapisup()
 
 if __name__ == '__main__':
-    timeout=2
+    timeout=10
     p = multiprocessing.Process(target=execution)
     p.start()
     p.join(timeout)

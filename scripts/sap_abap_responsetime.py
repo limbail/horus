@@ -145,7 +145,7 @@ def execution():
     _getsaprtimes()
 
 if __name__ == '__main__':
-    timeout=5
+    timeout=10
     p = multiprocessing.Process(target=execution)
     p.start()
     p.join(timeout)
