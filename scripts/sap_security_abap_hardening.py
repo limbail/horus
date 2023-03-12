@@ -52,6 +52,7 @@ influx_token = myconfig['influx_token']
 influx_org = myconfig['influx_org']
 influxdb_url = myconfig['influxdb_url']
 influx_bucket = myconfig['influx_bucket']
+influx_timeout = myconfig['influx_timeout']
 
 # write to influx
 def write_result(rule,value):
@@ -62,7 +63,7 @@ def write_result(rule,value):
     except ImportError as e:
         print('Module with problems: {0}'.format(e))
 
-    client = influxdb_client.InfluxDBClient(url=influxdb_url, token=influx_token, org=influx_org, bucket_name=influx_bucket, timeout=5, verify_ssl=False)
+    client = influxdb_client.InfluxDBClient(url=influxdb_url, token=influx_token, org=influx_org, bucket_name=influx_bucket, timeout=influx_timeout, verify_ssl=False)
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
     # alerts

@@ -3,5 +3,7 @@
     "influx_org"    :   "my-org",
     "influx_org_id" :   "e52202b72ec74824",
     "influx_token"  :   "tJWSEQ3gphRTxma1FNCks1xwN5y6cXMJEgOqrm8L_1uD8IaqGPcOJdsfmzY-b-wdoqsbqJIr_b_4yGiaP5tJ_Q==",
-    "influx_bucket" :   "horus"
+    "influx_bucket" :   "horus",
+    "influx_timeout" :   10000
+
 }
