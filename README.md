@@ -6,18 +6,20 @@
   <h1 align="center">HORUS</h1>
 
   <p align="center">
-    Dashboard for SAP servers using pyrfc, pyhdb, ansible, influxdb and grafana. focused in:
+    Dashboard for SAP servers to health monitoring and check security. using SAP best practices in HANA, ABAP, JAVA and others...
+    
+    Using pyrfc, pyhdb, ansible, influxdb, grafana, pykepass and so on...
+
+    Focused in:
     
     MONITORING:
-    - Dashboard overview of systems. fast, easy and productive.
-    
-    SECURITY:
-    - Hardening focused with SAP best practices.
-    
-    AUTOMATION:
-    - Some repetitive tasks.
+    - Dashboard of global environment overview.
+    - Per system detail and projects
 
-    This project will be updated in my free time, if someone want to help me, write me some email or push some commit.
+    SECURITY:
+    - Hardening SAP, OS, BBDD...
+    
+    This project will be updated in my free time, if someone want to help me, write me some email or use some branch to send updates.
   </p>
 </div>
 
@@ -35,18 +37,21 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Pending:
-> - [ ] Dashboard   (30%).
-> - [ ] Cleanup/rewrite scripts (20%)
-> - [ ] Alerts.
-> - [ ] Hardening.
-> - [ ] In release version: create ansible and grafana official modules and dashboard.
-> - [ ] I'm starting right now, let me some time...
+> - [30%] Dashboard
+> - [25%] Cleanup/rewrite created scripts
+> - [0%] Add more scripts
+> - [0%]  Alerts.
+> - [5%]  Hardening.
+> - [0%]  In release version: create ansible and grafana official modules and dashboard.
+> - [ ]   I'm starting right now, let me some time...
+
 
 <!-- Some ideas to be included -->
 ## Ideas:
-> 
-> 
-> 
+> - [?] Penetration testing. always is funny.
+> - [?] Ldap integration. mmm.
+> - [?] Dokerization, why not.
+> - [?] Snotes auto review
 
 <!-- Contact me -->
 ## Get in touch:
