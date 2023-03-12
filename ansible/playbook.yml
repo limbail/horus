@@ -76,13 +76,13 @@
       register: script_output
     - debug: var=script_output.stdout_lines
 
-- name: Z_WIP
+- name: sap_hana_backup
   ignore_errors: true
-  hosts: dev_abap
+  hosts: development preproduction production
   connection: local
   gather_facts: false
   tasks:
-    - name: checking Z_WIP
-      command: ../scripts/Z_WIP.py """{{ host_dict }}"""
+    - name: checking sap_hana_backup
+      command: ../scripts/sap_hana_backup.py """{{ host_dict }}"""
       register: script_output
     - debug: var=script_output.stdout_lines

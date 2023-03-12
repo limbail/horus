@@ -134,11 +134,11 @@ def _getsaprtimes():
             else: https=0
 
             write_result(dialog,background,rfc,http,https)
-
-        conn.close()
         
     except Exception:
         raise
+    finally:
+        conn.close()            
 
 
 def execution():

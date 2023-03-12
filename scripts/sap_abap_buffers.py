@@ -110,9 +110,10 @@ def _sapabapbuffer():
             buffer_swap = data["SWAP"]
             buffer_hitratio = data["HITRATIO"]
             write_result(buffer_name,buffer_avail_size,buffer_used_space,buffer_swap,buffer_hitratio)
-        conn.close()            
     except:
         raise
+    finally:
+        conn.close()            
 
 def execution():
     _sapabapbuffer()

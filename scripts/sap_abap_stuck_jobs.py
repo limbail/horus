@@ -124,10 +124,11 @@ def _sap_abap_jobs():
                 stuckjobs += 1
 
         write_result(stuckjobs)
-        conn.close()            
-        
+      
     except:
         raise
+    finally:
+        conn.close()            
 
 
 def execution():

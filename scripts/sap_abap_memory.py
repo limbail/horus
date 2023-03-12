@@ -111,10 +111,10 @@ def _sap_abap_memory():
         sap_memory_used=round(sumtotal)
 
         write_result(sap_memory_total,sap_memory_used)
-        conn.close()            
-
     except:
         raise
+    finally:
+        conn.close()            
 
 
 def execution():

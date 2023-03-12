@@ -137,14 +137,11 @@ def _getwpinfo():
                 if data['WP_STATUS'] == 'Running': wp_spo_running += 1
 
         write_result(wp_dia_total, wp_dia_running, wp_upd_total, wp_upd_running, wp_bgd_total, wp_bgd_running, wp_spo_total, wp_spo_running)
-        
-        conn.close()
-        
+               
     except Exception:
         raise
-
-
-
+    finally:
+        conn.close()            
 
 def execution():
     _getwpinfo()

@@ -416,10 +416,10 @@ def _sap_security_abap_hardening():
             else:
                 write_result(rule,2)
 
-        conn.close()
-
     except:
         raise
+    finally:
+        conn.close()            
 
 
 def execution():
