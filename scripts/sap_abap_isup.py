@@ -114,5 +114,6 @@ if __name__ == '__main__':
 
     if p.is_alive():
         print("Timeout raise!: {}".format(timeout))
+        write_result(0)
         p.terminate()
         p.join()
