@@ -53,6 +53,7 @@ influx_token = myconfig['influx_token']
 influx_org = myconfig['influx_org']
 influxdb_url = myconfig['influxdb_url']
 influx_bucket = myconfig['influx_bucket']
+influx_timeout = myconfig['influx_timeout']
 
 # write to influx
 def write_result(buffer_name,buffer_avail_size,buffer_used_space,buffer_swap,buffer_hitratio):
@@ -63,7 +64,7 @@ def write_result(buffer_name,buffer_avail_size,buffer_used_space,buffer_swap,buf
     except ImportError as e:
         print('Module with problems: {0}'.format(e))
 
-    client = influxdb_client.InfluxDBClient(url=influxdb_url, token=influx_token, org=influx_org, bucket_name=influx_bucket, timeout=5, verify_ssl=False)
+    client = influxdb_client.InfluxDBClient(url=influxdb_url, token=influx_token, org=influx_org, bucket_name=influx_bucket, timeout=influx_timeout, verify_ssl=False)
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
     # alerts
@@ -109,6 +110,7 @@ def _sapabapbuffer():
             buffer_swap = data["SWAP"]
             buffer_hitratio = data["HITRATIO"]
             write_result(buffer_name,buffer_avail_size,buffer_used_space,buffer_swap,buffer_hitratio)
+        conn.close()            
     except:
         raise
 
